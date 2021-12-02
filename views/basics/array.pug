@@ -1,1 +1,20 @@
 extends ../layout 
+block stylesheets 
+    link(href='/css/array.css' rel='stylesheet')
+    script(src='/js/array.js')
+
+block container
+    section#intro
+        .container
+            .row
+                .col-md-12
+                    div.array.col-md-6.col-md-offset-3
+                    div.methods
+                        div.insert.method
+                            span Insert
+                            input(type="text")
+                            input(type="button" value="Go")
+                        div.delete.method
+                            span Delete
+                            input(type="text")
+                            input(type="button" value="Go")

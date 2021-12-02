@@ -1,0 +1,36 @@
+@import 'variables';
+@import 'functions';
+
+body {
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
+}
+
+.container {
+    height: 100vh;
+    @include flexCenter(row);
+    .array {
+        margin-bottom: 50px;
+    }
+    .methods {
+        @include flexCenter(column);
+    }
+    .method {
+        margin: 5px 0px;
+
+        span {
+            color: map_get($font, color);
+            font-family: map_get($font, family);
+            margin: 0px 14px;
+        }
+        .input {
+            margin: 0px 2px;
+        }
+    }
+}
+
+.array {
+    width: 500px;
+    height: 200px;
+    border: 1px solid white;
+}
