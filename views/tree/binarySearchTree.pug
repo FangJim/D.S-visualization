@@ -1,1 +1,27 @@
 extends ../layout 
+block stylesheets 
+    link(href='/css/tree/BST.css' rel='stylesheet')
+
+block container
+    section#intro
+        .container
+            .row
+                .col-md-12
+                    div.BST.col-md-6.col-md-offset-3
+                    div.methods
+                        div.insert.method
+                            span Insert
+                            input.input.insert.value(type="text" placeholder='value')
+                            button.btn.btn-success.go(type='button') Go
+                        div.delete.method
+                            span Delete
+                            input.input.delete.value(type="text" placeholder='value')
+                            button.btn.btn-success.go(type='button') Go
+                        div.traversal.method
+                            span Traversal
+                            button.btn.btn-success.go(type='button') Preorder
+                            button.btn.btn-success.go(type='button') Inorder
+                            button.btn.btn-success.go(type='button') Postorder
+
+block javascript 
+    script(src='/js/BST.js')

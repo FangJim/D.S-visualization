@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'functions';
+@import '../modules/variables.scss';
+@import '../modules/functions.scss';
 
 body {
     background-color: map_get($background, color);

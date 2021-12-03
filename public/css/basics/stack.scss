@@ -1,0 +1,16 @@
+@import '../modules/variables';
+@import '../modules/functions';
+@import '../modules/inputStyle';
+
+body {
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
+}
+
+.stack {
+    width: 200px;
+    height: 350px;
+    border: 1px solid white;
+    border-top: 0px;
+    margin-bottom: 50px;
+}

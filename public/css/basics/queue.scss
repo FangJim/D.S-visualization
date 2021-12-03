@@ -1,0 +1,16 @@
+@import '../modules/variables';
+@import '../modules/functions';
+@import '../modules/inputStyle';
+
+body {
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
+}
+
+.queue {
+    width: 700px;
+    height: 100px;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    margin-bottom: 50px;
+}

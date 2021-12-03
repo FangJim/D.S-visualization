@@ -1,6 +1,6 @@
 extends ../layout 
 block stylesheets 
-    link(href='/css/array.css' rel='stylesheet')
+    link(href='/css/basics/array.css' rel='stylesheet')
 
 block container
     section#intro
@@ -11,11 +11,13 @@ block container
                     div.methods
                         div.insert.method
                             span Insert
-                            input.input.insert(type="text")
+                            input.input.insert.index(type="text" placeholder='index')
+                            input.input.insert.value(type="text" placeholder='value')
                             button.btn.btn-success.go(type='button') Go
                         div.delete.method
                             span Delete
-                            input.input.delete(type="text")
+                            input.input.delete.index(type="text" placeholder='index')
+                            input.input.delete.value(type="text" placeholder='value')
                             button.btn.btn-success.go(type='button') Go
 
 block javascript 

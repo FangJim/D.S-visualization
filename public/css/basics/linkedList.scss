@@ -1,0 +1,15 @@
+@import '../modules/variables';
+@import '../modules/functions';
+@import '../modules/inputStyle';
+
+body {
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
+}
+
+.linkedList {
+    width: 500px;
+    height: 200px;
+    border: 1px solid white;
+    margin-bottom: 50px;
+}
