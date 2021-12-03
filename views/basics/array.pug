@@ -1,7 +1,6 @@
 extends ../layout 
 block stylesheets 
     link(href='/css/array.css' rel='stylesheet')
-    script(src='/js/array.js')
 
 block container
     section#intro
@@ -12,9 +11,12 @@ block container
                     div.methods
                         div.insert.method
                             span Insert
-                            input(type="text")
-                            input(type="button" value="Go")
+                            input.input.insert(type="text")
+                            button.btn.btn-success.go(type='button') Go
                         div.delete.method
                             span Delete
-                            input(type="text")
-                            input(type="button" value="Go")
+                            input.input.delete(type="text")
+                            button.btn.btn-success.go(type='button') Go
+
+block javascript 
+    script(src='/js/array.js')

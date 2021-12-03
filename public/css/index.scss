@@ -8,7 +8,7 @@ body {
 
 #intro {
     & .container {
-        @include flexCenter();
+        @include flexCenter(column);
         height: 90vh;
     }
     & h1 {

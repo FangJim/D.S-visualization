@@ -8,7 +8,6 @@ const path = require('path')
 const app = express();
 
 app.set('view engine', 'pug');
-
 //set app use
 app.use(
     sassMiddleware({
@@ -16,10 +15,12 @@ app.use(
         dest: path.join(__dirname, 'public'),
         debug: true,
         indentedSyntax: false,
-        sourceMap: true
+        sourceMap: true,
+        outputStyle: 'compressed'
     })
 )
 
+// app.use(express.static(__dirname + '/public'));
 app.use(express.static('public'))
 app.use('/', router);
 

@@ -16,15 +16,17 @@ body {
         @include flexCenter(column);
     }
     .method {
-        margin: 5px 0px;
+        @include flexCenter(row);
 
         span {
             color: map_get($font, color);
             font-family: map_get($font, family);
-            margin: 0px 14px;
+            font-size: map-get($font, size);
+            margin: 10px;
         }
         .input {
-            margin: 0px 2px;
+            width: 50px;
+            margin: 10px;
         }
     }
 }
