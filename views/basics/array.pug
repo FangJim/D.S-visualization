@@ -11,14 +11,13 @@ block container
                     div.methods
                         div.insert.method
                             span Insert
-                            input.input.insert.index(type="text" placeholder='index')
-                            input.input.insert.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.insertIndex(type="text" placeholder='index')
+                            input.input.insertValue(type="text" placeholder='value')
+                            button.btn.btn-success.insertGo(type='button') Go
                         div.delete.method
                             span Delete
-                            input.input.delete.index(type="text" placeholder='index')
-                            input.input.delete.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.deleteIndex(type="text" placeholder='index')
+                            button.btn.btn-success.deleteGo(type='button') Go
 
 block javascript 
     script(src='/js/array.js')

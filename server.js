@@ -24,6 +24,6 @@ app.use(
 app.use(express.static('public'))
 app.use('/', router);
 
-app.listen(process.env["PORT"], process.env["HOST"], () => {
-    console.log(`app is running at ${process.env["HOST"]}:${process.env["PORT"]}`)
+app.listen(3000, '127.0.0.1', () => {
+    console.log(`app is running`)
 });
