@@ -7,14 +7,15 @@ block container
         .container
             .row
                 .col-md-12
-                    div.stack.col-md-6.col-md-offset-3
+                    canvas#canvas.stack.col-md-12(width="1000" height= "400")
                     div.methods
                         div.insert.method
                             span Push
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.pushValue(type="text" placeholder='value' maxlength="4")
+                            button.btn.btn-success.pushGo(type='button') Go
                         div.delete.method
                             span Pop
-                            button.btn.btn-success.go(type='button') Go
+                            button.btn.btn-success.popGo(type='button') Go
 
 block javascript 
     script(src='/js/stack.js')
