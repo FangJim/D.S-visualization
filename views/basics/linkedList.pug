@@ -7,18 +7,21 @@ block container
         .container
             .row
                 .col-md-12
-                    div.linkedList.col-md-6.col-md-offset-3
+                    canvas#canvas.linkList.col-md-12(width="1000" height= "400")
                     div.methods
+                        div.append.method
+                            span append
+                            input.input.appendValue(type="text" placeholder='value' maxlength="4")
+                            button.btn.btn-success.appendGo(type='button') Go
                         div.insert.method
                             span Insert
-                            input.input.insert.index(type="text" placeholder='index')
-                            input.input.insert.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.insertIndex(type="text" placeholder='index')
+                            input.input.insertValue(type="text" placeholder='value' maxlength="4")
+                            button.btn.btn-success.insertGo(type='button') Go
                         div.delete.method
                             span Delete
-                            input.input.delete.index(type="text" placeholder='index')
-                            input.input.delete.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.deleteIndex(type="text" placeholder='index')
+                            button.btn.btn-success.deleteGo(type='button') Go
 
 block javascript 
     script(src='/js/linkedList.js')
