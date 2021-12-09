@@ -29,7 +29,7 @@ let offsetValue = 20;
 let anime = false;
 let temp;
 const move = {
-    rateX: 0
+    rateY: 0
 }
 update();
 
@@ -47,18 +47,19 @@ function update() {
 }
 
 function currentObj() {
-    if (move.rateX === 330) {
+    if (move.rateY === 420) {
         anime = false;
-        move.rateX = 0;
+        move.rateY = 0;
+        pushGo.disabled = false;
         stack.push(temp);
     }
     if (anime) {
-        move.rateX += 2;
+        move.rateY += 4;
         //setting
         ctx.lineWidth = 3;
-        ctx.strokeStyle = 'white';
+        ctx.strokeStyle = 'red';
         ctx.font = '30px Arial';
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'red';
 
         //get size to change y
         let size = stack.size();
@@ -67,8 +68,8 @@ function currentObj() {
         offset(temp);
 
         //draw
-        ctx.strokeRect(20 + move.rateX, 430 - size * 50, 300, 50);
-        ctx.fillText(`${temp}`, 165 + offsetValue + move.rateX, 465 - size * 50);
+        ctx.strokeRect(350, 0 + move.rateY - size * 50, 300, 50);
+        ctx.fillText(`${temp}`, 500 + offsetValue, 35 - size * 50 + move.rateY);
     }
 }
 
@@ -89,7 +90,7 @@ function offset(value) {
 
 function drawStackFormat() {
     //setting
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
     ctx.strokeStyle = 'white';
 
     //draw Stack
@@ -105,12 +106,14 @@ function drawStackFormat() {
 
 function drawStack() {
     let arr = stack.show();
+    ctx.strokeStyle = 'white';
+    ctx.fillStyle = 'white';
     for (let i = 0; i < arr.length; i++) {
         //font offset
         offset(arr[i]);
         //draw
         ctx.strokeRect(350, 430 - i * 50, 300, 50);
-        ctx.fillText(`${arr[i]}`, 200 + offsetValue, 465 - size * 50);
+        ctx.fillText(`${arr[i]}`, 500 + offsetValue, 465 - i * 50);
     }
 }
 
@@ -122,6 +125,11 @@ const popGo = document.querySelector('.popGo');
 
 
 pushGo.addEventListener('click', function () {
+    pushGo.disabled = true;
+    if (stack.size() === 8) {
+        alert('Sorry, Stack is full');
+        return;
+    }
     if (pushValue.value == "") {
         alert('Please insert a numbers');
         return;
@@ -132,6 +140,7 @@ pushGo.addEventListener('click', function () {
 })
 
 popGo.addEventListener('click', function () {
+    pushGo.disabled = true;
     stack.pop();
     stack.print();
 })
