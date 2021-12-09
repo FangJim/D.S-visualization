@@ -6,7 +6,3 @@ body {
     background-color: map_get($background, color);
     background-image: map_get($background, image);
 }
-
-.stack {
-    margin-bottom: 50px;
-}
