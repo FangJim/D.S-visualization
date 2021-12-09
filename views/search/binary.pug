@@ -1,1 +1,19 @@
 extends ../layout 
+block stylesheets 
+    link(href='/css/search/binary.css' rel='stylesheet')
+   
+
+block container
+    .container
+        .show
+        div.methods
+            div.insert.method
+                span Search
+                input.input.searchValue(type="text" placeholder='value' maxlength="4")
+                button.btn.btn-success.searchGo(type='button') Go
+            
+block javascript 
+    script(src='https://d3js.org/d3.v4.min.js')
+    script(src="/js/binary/draw-binary.js") 
+    script(src="/js/binary/search-binary.js") 
+    
