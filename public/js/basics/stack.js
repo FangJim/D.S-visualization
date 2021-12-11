@@ -26,7 +26,8 @@ const ctx = canvas.getContext('2d');
 //build stack
 let stack = new Stack();
 let offsetValue = 20;
-let anime = false;
+let pushAnime = false;
+let popAnime = false;
 let temp;
 const move = {
     rateY: 0
@@ -39,21 +40,24 @@ function update() {
 
     drawStackFormat();
 
-    currentObj();
+    pushObj();
+
+    popObj();
 
     drawStack();
 
     requestAnimationFrame(update);
 }
 
-function currentObj() {
-    if (move.rateY === 420) {
-        anime = false;
+function pushObj() {
+    if (move.rateY > 420) {
+        pushAnime = false;
         move.rateY = 0;
         pushGo.disabled = false;
+        popGo.disabled = false;
         stack.push(temp);
     }
-    if (anime) {
+    if (pushAnime) {
         move.rateY += 4;
         //setting
         ctx.lineWidth = 3;
@@ -70,6 +74,28 @@ function currentObj() {
         //draw
         ctx.strokeRect(350, 0 + move.rateY - size * 50, 300, 50);
         ctx.fillText(`${temp}`, 500 + offsetValue, 35 - size * 50 + move.rateY);
+    }
+}
+
+function popObj() {
+    ctx.strokeStyle = 'red';
+    ctx.fillStyle = 'red';
+
+    if (popAnime && move.rateY < -50) {
+        move.rateY = 0;
+
+        popAnime = false;
+        pushGo.disabled = false;
+        popGo.disabled = false;
+    }
+    if (popAnime) {
+        move.rateY -= 4;
+        //font offset
+        offset(temp);
+
+        //draw
+        ctx.strokeRect(350, 0 + move.rateY, 300, 50);
+        ctx.fillText(`${temp}`, 500 + offsetValue, 35 + move.rateY);
     }
 }
 
@@ -126,6 +152,7 @@ const popGo = document.querySelector('.popGo');
 
 pushGo.addEventListener('click', function () {
     pushGo.disabled = true;
+    popGo.disabled = true;
     if (stack.size() === 8) {
         alert('Sorry, Stack is full');
         return;
@@ -136,12 +163,21 @@ pushGo.addEventListener('click', function () {
     }
     temp = pushValue.value;
     pushValue.value = "";
-    anime = true;
+    pushAnime = true;
 })
 
 popGo.addEventListener('click', function () {
     pushGo.disabled = true;
+    popGo.disabled = true;
+    //top one
+    temp = stack.peek();
+
+    let size = stack.size();
+
     stack.pop();
-    stack.print();
+
+    //peek position
+    move.rateY = 420 - size * 50;
+    popAnime = true;
 })
 
