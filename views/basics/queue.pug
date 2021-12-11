@@ -7,14 +7,15 @@ block container
         .container
             .row
                 .col-md-12
-                    div.queue.col-md-6.col-md-offset-3
+                    canvas#canvas.queue.col-md-12(width="1000" height= "300")
                     div.methods
                         div.insert.method
                             span Enqueue
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.enqueueValue(type="text" placeholder='value' maxlength="4")
+                            button.btn.btn-success.enqueueGo(type='button') Go
                         div.delete.method
                             span Dequeue
-                            button.btn.btn-success.go(type='button') Go
+                            button.btn.btn-success.dequeueGo(type='button') Go
 
 block javascript 
     script(src='/js/basics/queue.js')
