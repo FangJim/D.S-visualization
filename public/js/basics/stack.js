@@ -1,23 +1,25 @@
 //implement Stack
-function Stack() {
-    let items = [];
-    this.push = function (element) {
-        items.push(element);
+class Stack {
+    constructor() {
+        this.items = [];
     }
-    this.pop = function (element) {
-        return items.pop(element);
+    push(element) {
+        this.items.push(element);
     }
-    this.size = function () {
-        return items.length;
+    pop(element) {
+        return this.items.pop(element);
     }
-    this.peek = function () {
-        return items[items.length - 1];
+    size() {
+        return this.items.length;
     }
-    this.show = function () {
-        return items;
+    peek() {
+        return this.items[this.items.length - 1];
     }
-    this.print = function () {
-        console.log(items);
+    show() {
+        return this.items;
+    }
+    print() {
+        console.log(this.items);
     }
 }
 
