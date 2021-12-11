@@ -1,7 +1,7 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let arr = new Array(20).fill("");
-
+let offsetValue = 0;
 //for knowing insert or delete now
 let flag = {
     state: false,
@@ -28,10 +28,23 @@ function update() {
     requestAnimationFrame(update)
 }
 
+function offset(value) {
+    if (value > 999) {
+        offsetValue = 25;
+    }
+    else if (value > 99) {
+        offsetValue = 30;
+    }
+    else if (value > 9) {
+        offsetValue = 35;
+    }
+    else {
+        offsetValue = 45;
+    }
+}
+
 //draw array
 function drawArray() {
-    let offset;
-
     //array setting
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 5;
@@ -41,18 +54,7 @@ function drawArray() {
 
     for (let i = 0; i < 20; i++) {
         //adjust font offset
-        if (arr[i] > 999) {
-            offset = 25;
-        }
-        else if (arr[i] > 99) {
-            offset = 30;
-        }
-        else if (arr[i] > 9) {
-            offset = 35;
-        }
-        else {
-            offset = 45;
-        }
+        offset(arr[i]);
 
 
         //draw array
@@ -60,13 +62,13 @@ function drawArray() {
             //first line
             ctx.strokeRect(0 + i * 100, 50, 100, 100)
             ctx.fillText(`${i}`, 45 + i * 100, 45)
-            ctx.fillText(`${arr[i]}`, offset + i * 100, 110)
+            ctx.fillText(`${arr[i]}`, offsetValue + i * 100, 110)
         }
         else {
             //second line
             ctx.strokeRect(0 + (i - 10) * 100, 250, 100, 100)
             ctx.fillText(`${i}`, 35 + (i - 10) * 100, 245)
-            ctx.fillText(`${arr[i]}`, offset + (i - 10) * 100, 310)
+            ctx.fillText(`${arr[i]}`, offsetValue + (i - 10) * 100, 310)
         }
     }
 }
