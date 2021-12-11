@@ -8,6 +8,10 @@ let flag = {
     goto: null
 };
 
+let effect = {
+    alpha: 0
+}
+
 update();
 
 //main
@@ -72,6 +76,13 @@ function drawArray() {
 function drawCircle(index) {
     let circle_x = 50;
     let circle_y = 100;
+
+    //effect
+    if (effect.alpha < 1) {
+        effect.alpha += 0.05;
+    }
+
+    //change row
     if (index > 9) {
         circle_y = 300;
     }
@@ -79,11 +90,17 @@ function drawCircle(index) {
 
     ctx.beginPath();
     ctx.arc(circle_x, circle_y, 50, 0, Math.PI * 2);
-    ctx.strokeStyle = 'red';
+    ctx.strokeStyle = `rgba(255, 0, 0, ${effect.alpha})`;
     ctx.stroke();
 }
 
 function drawSlash(index) {
+    //effect
+    if (effect.alpha < 1) {
+        effect.alpha += 0.05;
+    }
+
+
     if (flag.goto != null) {
         let line_x = 0;
         let line_y = 50;
@@ -93,7 +110,7 @@ function drawSlash(index) {
         ctx.beginPath();
         ctx.moveTo(line_x + (index % 10) * 100, line_y);
         ctx.lineTo(line_x + (index % 10) * 100 + 100, line_y + 100);
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = `rgba(255, 0, 0, ${effect.alpha})`;
         ctx.stroke();
     }
 }
@@ -107,6 +124,8 @@ const insertGo = document.querySelector('.insertGo');
 const deleteGo = document.querySelector('.deleteGo');
 
 insertGo.addEventListener('click', () => {
+    effect.alpha = 0;
+
     //both need to have value
     if (insertIndex.value == "" || insertValue.value == "") {
         return;
@@ -132,6 +151,9 @@ insertGo.addEventListener('click', () => {
 });
 
 deleteGo.addEventListener('click', () => {
+    //effect
+    effect.alpha = 0;
+
     //out of range
     if (deleteIndex.value > 19) {
         deleteIndex.value = ""
