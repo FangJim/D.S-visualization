@@ -1,8 +1,8 @@
 {
 	"version": 3,
-	"file": "BT.css",
+	"file": "completeBT.css",
 	"sources": [
-		"BT.scss",
+		"completeBT.scss",
 		"../modules/variables.scss",
 		"../modules/functions.scss",
 		"../modules/inputStyle.scss"
