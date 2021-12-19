@@ -1,0 +1,122 @@
+@import '../modules/variables.scss';
+@import '../modules/functions.scss';
+@import '../modules/inputStyle.scss';
+
+body {
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
+}
+
+.container{
+    flex-direction: column;
+}
+
+.title{
+    color: white;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.intr{
+    margin: 0 10px;
+    position: relative;
+    width: 1080px;
+    float: left;
+    justify-content: center;
+    display: flex;
+    margin-top: 13px;
+}
+
+.text{
+    color: white;
+    width: 250px;
+    float: left;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+
+.row1 .column{
+    margin: 0 10px;
+    background: #fff;
+    position: relative;
+    min-width: 250px;
+    min-height: 250px;
+    float: left;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.row1 .column .imgbox{
+    position: relative;
+}
+
+.row1 .column .imgbox img{
+    height: 300px;
+    width: 100%;
+    transition: 3s;
+}
+
+.row1 .column:hover .imgbox img{
+    transform: scale(1.4);
+}
+
+.row1 .column .details{
+    position: absolute;
+    bottom: -130;
+    left:0;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0,0,0,.8);
+    transition: .5s;
+}
+
+
+.row1 .column:hover .details{
+    bottom:0;
+}
+
+.row1 .column .details h3{
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-weight: 500;
+    text-align: right;
+    // text-transform: uppercase;
+}
+
+.row1 .column .details h3 p{
+    margin: 0;
+    padding: 0;
+    color: red;
+    font-size: 14px;
+    font-weight: 900;
+    // text-transform: uppercase;
+    position: relative;
+}
+
+.row1 .column .details ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    float: right;
+}
+
+.row1 .column .details ul li{
+    list-style: none;
+}
+
+.row1 .column .details ul a{
+    padding: 0 10px;
+    color: white;
+}
+
+.row1 .column .details ul a .fa{
+    transition: .5s;
+}
+
+.row1 .column .details ul a:hover .fa{
+    transform: rotateY(180deg);
+    color: red;
+}

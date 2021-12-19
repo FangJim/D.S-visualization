@@ -157,9 +157,13 @@ pushGo.addEventListener('click', function () {
     popGo.disabled = true;
     if (stack.size() === 8) {
         alert('Sorry, Stack is full');
+        pushGo.disabled = false;
+        popGo.disabled = false;
         return;
     }
     if (pushValue.value == "") {
+        pushGo.disabled = false;
+        popGo.disabled = false;
         alert('Please insert a numbers');
         return;
     }

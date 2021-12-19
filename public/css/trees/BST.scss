@@ -7,13 +7,9 @@ body {
     background-image: map_get($background, image);
 }
 
-.BST {
+.AVL {
     width: 400px;
     height: 400px;
     border: 1px solid white;
     margin: 20px 0px;
-}
-.container .method .traversal {
-    margin: 0px 15px;
-    font-size: 20px;
 }

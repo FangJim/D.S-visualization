@@ -1,6 +1,6 @@
 extends ../layout 
 block stylesheets 
-    link(href='/css/trees/AVL.css' rel='stylesheet')
+    link(href='/css/trees/BST.css' rel='stylesheet')
 
 block container
     section#intro
@@ -12,7 +12,7 @@ block container
                             button.btn.btn-outline-danger.go.traversal.Preorder(type='button') Preorder
                             button.btn.btn-outline-danger.go.traversal.Inorder(type='button') Inorder
                             button.btn.btn-outline-danger.go.traversal.Postorder(type='button') Postorder
-                    div.BT.col-md-6.col-md-offset-3
+                    canvas#canvas.BST.col-md-12(width="1000" height= "400")
                     div.methods
                         div.insert.method
                             span Insert
@@ -24,4 +24,4 @@ block container
                             button.btn.btn-success.go(type='button') Go
 
 block javascript 
-    script(src='/js/trees/AVL.js')
+    script(src='/js/trees/BST.js')
