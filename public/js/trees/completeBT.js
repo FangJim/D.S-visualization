@@ -98,12 +98,13 @@ class BinarySearchTree {
 }
 //build BST
 let BST = new BinarySearchTree()
-let bst_Data_Arr = [30, 23, 49, 3, 5];
+let bst_Data_Arr = [100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+let middle = []
 
 //node structure
 const nodeStructure = {
-    nodeX: 400,
-    nodeY: 40,
+    nodeX: 800,
+    nodeY: 50,
     size: 20,
     lineSize: 20,
     lineOffset: 5
@@ -113,9 +114,9 @@ const nodeStructure = {
 //global variables
 let temp;
 let fontOffset = 0;
-let changeLevel = false
 let theLeftist_Node = nodeStructure.nodeX
-let row_node_num = 0;
+let row_count = 0;
+let node_spacing = 85;
 
 //canvas
 const canvas = document.getElementById('canvas');
@@ -154,50 +155,101 @@ function drawTree() {
             exp++;
             count = 1;
             level = exp + 1;
-            changeLevel = true;
         }
-
         //what type we need to draw(start from level 0)
-        drawNode(bst_Data_Arr[i], level - 1, i)
+        drawNode(i, level - 1)
+        drawLine(middle)
+        drawData()
     }
 }
-//root structure
-function drawNode(data, level, i) {
-    let most_num_row = Math.floor(800 / level)
-    theLeftist_Node = nodeStructure.nodeX - level * 25
-    offset(data)
+
+//using Dynamic Programming draw Node
+function drawNode(nodeNumber, level) {
+    let recordMiddle;
     ctx.beginPath();
-    if (i === 0) {
-        ctx.arc(theLeftist_Node, nodeStructure.nodeY, 20, 0, Math.PI * 2);
-        // ctx.fillText(data, 400 + fontOffset, level * 65 + 47);
+
+    if (nodeNumber === 0) {
+        recordMiddle = 800;
+        ctx.arc(middle[0], nodeStructure.nodeY, 30, 0, Math.PI * 2);
     }
-    else if (i % 2 === 1) {
-        ctx.arc(theLeftist_Node, nodeStructure.nodeY + level * 65, 20, 0, Math.PI * 2);
-        // ctx.moveTo(400, level * 60);
-        // ctx.lineTo(380, level * 60 + 25);
-        // ctx.fillText(data, 375 + fontOffset, level * 65 + 47);
+    else if (nodeNumber % 2 === 1) {
+        recordMiddle = middle[Math.floor(nodeNumber / 2)] - nodeSpacing(nodeNumber)
+        ctx.arc(recordMiddle, nodeStructure.nodeY + level * 90, 30, 0, Math.PI * 2);
     }
-    else if (i % 2 === 0) {
-        ctx.arc(theLeftist_Node + i * 25, nodeStructure.nodeY + level * 65, 20, 0, Math.PI * 2);
-        // ctx.moveTo(400, level * 60);
-        // ctx.lineTo(420, level * 60 + 25);
-        // ctx.fillText(data, 425 + fontOffset, level * 65 + 47);
+    else if (nodeNumber % 2 === 0) {
+        recordMiddle = middle[Math.floor(nodeNumber / 2) - 1] + nodeSpacing(nodeNumber)
+        ctx.arc(recordMiddle, nodeStructure.nodeY + level * 90, 30, 0, Math.PI * 2);
     }
+    if (middle.length != bst_Data_Arr.length) {
+        middle.push(recordMiddle)
+    }
+    row_count++;
     ctx.stroke();
 }
+//draw line
+function drawLine(middle) {
+    let level = 0
+    let y = 80
+    let yOffset = -10
+    for (let i = 1; i < middle.length; i++) {
+        if (i === 1 || i === 3 || i === 7 || i === 14) {
+            level++
+            yOffset += 10
+        }
+        if (i % 2 === 0) continue
+        ctx.beginPath();
+        ctx.moveTo(middle[Math.ceil(i / 2) - 1], y * level + yOffset);
+        ctx.lineTo(middle[Math.floor(i / 2) * 2 + 1], y * level + 30 + yOffset);
+        ctx.stroke();
 
+        ctx.beginPath();
+        ctx.moveTo(middle[Math.ceil(i / 2) - 1], y * level + yOffset);
+        ctx.lineTo(middle[Math.floor(i / 2) * 2 + 2], y * level + 30 + yOffset);
+        ctx.stroke();
+    }
+    level = 0
+    yOffset = -10
+}
+//draw data
+function drawData() {
+    ctx.font = '28px Arial';
+    let level = 0
+    let yOffset = 60
+    for (let i = 0; i < bst_Data_Arr.length; i++) {
+        offset(bst_Data_Arr[i])
+        if (i === 1 || i === 3 || i === 7 || i === 15) {
+            level++
+            yOffset += 90
+        }
+        ctx.fillText(`${bst_Data_Arr[i]}`, middle[i] + fontOffset, yOffset);
+    }
+}
 //font offset
 function offset(value) {
     if (value > 99) {
-        fontOffset = -20;
+        fontOffset = -24;
     }
     else if (value > 9) {
-        fontOffset = -10;
+        fontOffset = -15;
     }
     else {
-        fontOffset = 0;
+        fontOffset = -7;
     }
 }
+//node spacing decrease
+function nodeSpacing(nodeNumber) {
+    if (nodeNumber >= 1 && nodeNumber <= 2) {
+        return 410
+    }
+    else if (nodeNumber >= 3 && nodeNumber <= 6) {
+        return 200
+    }
+    else if (nodeNumber >= 7 && nodeNumber <= 14) {
+        return 100
+    }
+    else return 50
+}
+
 //traversal
 const preOrder = document.querySelector('.preOrder');
 const inOrder = document.querySelector('.inOrder');
