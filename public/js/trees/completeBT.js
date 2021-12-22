@@ -1,104 +1,4 @@
-class Node {
-    constructor(data) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
-}
-class BinarySearchTree {
-    constructor() {
-        this.root = null;
-    }
-
-    insert(data) {
-        let newNode = new Node(data);
-        if (this.root === null) this.root = newNode;
-        else this.insertNode(this.root, newNode);
-    }
-
-    insertNode(node, newNode) {
-        if (newNode.data < node.data) {
-            if (node.left === null)
-                node.left = newNode;
-            else//still have l child
-                this.insertNode(node.left, newNode);
-        }
-        else {
-            if (node.right === null)
-                node.right = newNode;
-            else//still have r child
-                this.insertNode(node.right, newNode);
-        }
-    }
-
-    remove(data) {
-        this.root = this.removeNode(this.root, data);
-    }
-
-    removeNode(node, key) {
-        if (node === null)
-            return null;
-        else if (key < node.data) {
-            node.left = this.removeNode(node.left, key);
-            return node;
-        }
-        else if (key > node.data) {
-            node.right = this.removeNode(node.right, key);
-            return node;
-        }
-        else {
-            if (node.left === null && node.right === null) {
-                node = null;
-                return node;
-            }
-            if (node.left === null) {
-                node = node.right;
-                return node;
-            }
-
-            else if (node.right === null) {
-                node = node.left;
-                return node;
-            }
-
-            var aux = this.findMinNode(node.right);
-            node.data = aux.data;
-
-            node.right = this.removeNode(node.right, aux.data);
-            return node;
-        }
-
-    }
-
-    getRoot() {
-        return this.root;
-    }
-
-    inOrder(node) {
-        if (node !== null) {
-            this.inOrder(node.left);
-            console.log(node.data);
-            this.inOrder(node.right);
-        }
-    }
-    preOrder(node) {
-        if (node !== null) {
-            console.log(node.data);
-            this.inOrder(node.left);
-            this.inOrder(node.right);
-        }
-    }
-    postOrder(node) {
-        if (node !== null) {
-            this.inOrder(node.left);
-            this.inOrder(node.right);
-            console.log(node.data);
-        }
-    }
-}
-//build BST
-let BST = new BinarySearchTree()
-let bst_Data_Arr = [100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+let completeBT_data = [];
 let middle = []
 
 //node structure
@@ -110,21 +10,25 @@ const nodeStructure = {
     lineOffset: 5
 }
 
+//effect
+let effect = {
+    alpha: 0,
+    lineX: 0,
+    lineY: 0
+}
 
 //global variables
-let temp;
+let recordMiddle;
 let fontOffset = 0;
-let theLeftist_Node = nodeStructure.nodeX
 let row_count = 0;
-let node_spacing = 85;
+let have_rChild = false
+let deleteEffect = false
+let lChild_color = 'white'
+let rChild_color = 'white'
 
 //canvas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-ctx.lineWidth = 4;
-ctx.strokeStyle = 'white';
-ctx.font = '20px Arial';
-ctx.fillStyle = 'white';
 update();
 
 function update() {
@@ -139,7 +43,7 @@ function drawTree() {
     let level = 1;
     let exp = 0;
     let count = 0;
-    for (let i = 0; i < bst_Data_Arr.length; i++) {
+    for (let i = 0; i < completeBT_data.length; i++) {
         //calculate height
         count++;
         if (i === 0) {
@@ -156,8 +60,13 @@ function drawTree() {
             count = 1;
             level = exp + 1;
         }
-        //what type we need to draw(start from level 0)
-        drawNode(i, level - 1)
+
+        //effect alpha
+        if (effect.alpha < 1) {
+            effect.alpha += 0.02 / completeBT_data.length //maintain the rate
+        }
+
+        drawNode(i, level - 1)//what type we need to draw(start from level 0)
         drawLine(middle)
         drawData()
     }
@@ -165,9 +74,20 @@ function drawTree() {
 
 //using Dynamic Programming draw Node
 function drawNode(nodeNumber, level) {
-    let recordMiddle;
-    ctx.beginPath();
+    //effect
+    ctx.lineWidth = 4;
+    if (deleteEffect) {
+        ctx.strokeStyle = 'white';
+    }
+    else if (nodeNumber === completeBT_data.length - 1) {//the last one
+        ctx.strokeStyle = `rgba(255,0,0,${effect.alpha})`;
+    }
+    else {//others
+        ctx.strokeStyle = 'white';
+    }
 
+    //draw
+    ctx.beginPath();
     if (nodeNumber === 0) {
         recordMiddle = 800;
         ctx.arc(middle[0], nodeStructure.nodeY, 30, 0, Math.PI * 2);
@@ -180,50 +100,105 @@ function drawNode(nodeNumber, level) {
         recordMiddle = middle[Math.floor(nodeNumber / 2) - 1] + nodeSpacing(nodeNumber)
         ctx.arc(recordMiddle, nodeStructure.nodeY + level * 90, 30, 0, Math.PI * 2);
     }
-    if (middle.length != bst_Data_Arr.length) {
-        middle.push(recordMiddle)
-    }
+
+    middle[nodeNumber] = recordMiddle
+
     row_count++;
     ctx.stroke();
 }
+
 //draw line
 function drawLine(middle) {
+    //variable
     let level = 0
     let y = 80
     let yOffset = -10
-    for (let i = 1; i < middle.length; i++) {
+    //effect
+    ctx.strokeStyle = `rgba(255,255,255,${effect.alpha})`;
+
+    //draw
+    for (let i = 1; i < middle.length; i++) {//root don't need branch
+        //change level
         if (i === 1 || i === 3 || i === 7 || i === 14) {
             level++
             yOffset += 10
         }
+
+        //start from the left child
         if (i % 2 === 0) continue
+
+        //formula
+        let beginX = middle[Math.ceil(i / 2) - 1]//find father
+        let beginY = y * level + yOffset
+        let endX_lChild = middle[Math.floor(i / 2) * 2 + 1]//find leftChild position
+        let endX_rChild = middle[Math.floor(i / 2) * 2 + 2]//find rChild position
+        let endY = y * level + yOffset + 30
+
+        if (deleteEffect) {
+            lChild_color = 'white';
+            rChild_color = 'white';
+        }
+        else if (have_rChild && i === middle.length - 2) {// have rChild the last one draw red
+            lChild_color = 'white'
+            rChild_color = `rgba(255,0,0,${effect.alpha})`;
+        }
+        else if (i === middle.length - 1) {//only lChild the last one draw red
+            lChild_color = `rgba(255,0,0,${effect.alpha})`;
+        }
+        else {//others
+            lChild_color = 'white'
+            rChild_color = 'white'
+        }
+
+
+        //draw Left child
+        ctx.strokeStyle = lChild_color;
         ctx.beginPath();
-        ctx.moveTo(middle[Math.ceil(i / 2) - 1], y * level + yOffset);
-        ctx.lineTo(middle[Math.floor(i / 2) * 2 + 1], y * level + 30 + yOffset);
+        ctx.moveTo(beginX, beginY);
+        ctx.lineTo(endX_lChild, endY);
         ctx.stroke();
 
+        //draw Right child
+        ctx.strokeStyle = rChild_color;
         ctx.beginPath();
-        ctx.moveTo(middle[Math.ceil(i / 2) - 1], y * level + yOffset);
-        ctx.lineTo(middle[Math.floor(i / 2) * 2 + 2], y * level + 30 + yOffset);
+        ctx.moveTo(beginX, beginY);
+        ctx.lineTo(endX_rChild, endY);
         ctx.stroke();
     }
+
+    //reset
     level = 0
     yOffset = -10
 }
+
 //draw data
 function drawData() {
-    ctx.font = '28px Arial';
-    let level = 0
     let yOffset = 60
-    for (let i = 0; i < bst_Data_Arr.length; i++) {
-        offset(bst_Data_Arr[i])
+
+    //draw
+    for (let i = 0; i < completeBT_data.length; i++) {
+        ctx.font = '28px Arial';
+        //effect
+        if (deleteEffect) {
+            ctx.fillStyle = 'white';
+        }
+        else if (i === completeBT_data.length - 1) {//the last one
+            ctx.fillStyle = `rgba(255,0,0,${effect.alpha})`;
+        }
+        else {//others
+            ctx.fillStyle = 'white';
+        }
+
+        offset(completeBT_data[i])
         if (i === 1 || i === 3 || i === 7 || i === 15) {
-            level++
             yOffset += 90
         }
-        ctx.fillText(`${bst_Data_Arr[i]}`, middle[i] + fontOffset, yOffset);
+        ctx.fillText(`${completeBT_data[i]}`, middle[i] + fontOffset, yOffset);
+        ctx.font = '20px Arial';
+        ctx.fillText(`${i}`, middle[i] + 38, yOffset - 18);
     }
 }
+
 //font offset
 function offset(value) {
     if (value > 99) {
@@ -236,6 +211,7 @@ function offset(value) {
         fontOffset = -7;
     }
 }
+
 //node spacing decrease
 function nodeSpacing(nodeNumber) {
     if (nodeNumber >= 1 && nodeNumber <= 2) {
@@ -268,10 +244,38 @@ postOrder.addEventListener('click', () => {
 //methods
 const insertValue = document.querySelector('.insertValue');
 const insertGo = document.querySelector('.insertGo');
-const deleteValue = document.querySelector('.deleteValue');
+const deleteIndex = document.querySelector('.deleteIndex');
 const deleteGo = document.querySelector('.deleteGo');
 
 
 insertGo.addEventListener('click', () => {
-    temp = insertValue.value;
+    deleteEffect = false
+    if (insertValue.value == "") {
+        alert('You should input the value')
+        return;
+    }
+
+    //push
+    completeBT_data.push(insertValue.value)
+    if ((completeBT_data.length - 1) % 2 === 0) {//have rChild
+        have_rChild = true
+    }
+    else {
+        have_rChild = false
+    }
+
+    //initial
+    insertValue.value = ""
+    effect.alpha = 0
+})
+
+deleteGo.addEventListener('click', () => {
+    deleteEffect = true //change all to white
+    if (deleteIndex.value === "") {
+        alert('You should input the delete index')
+        return
+    }
+    completeBT_data.splice(deleteIndex.value, 1)
+    middle.splice(deleteIndex.value, 1)
+    deleteIndex.value = ""
 })
