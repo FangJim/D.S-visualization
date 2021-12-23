@@ -173,3 +173,16 @@ deleteGo.addEventListener('click', () => {
     //init
     deleteIndex.value = "";
 });
+
+
+//tips
+
+const tip = document.querySelector('.tips');
+
+tip.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Teaching',
+        html: "Array是一個連續記憶體配置的資料結構,可以透過索引值去快速取得數值,亦可刪除",
+
+    })
+})

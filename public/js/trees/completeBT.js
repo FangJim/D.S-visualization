@@ -1,4 +1,4 @@
-let completeBT_data = [2, 3, 4, 5, 6, 7, 8, 9];
+let completeBT_data = [2, 35, 7, 8, 9, 4, 1, 2, 35];
 let middle = [] //store node's x
 let height = []//store node's y
 
@@ -258,6 +258,9 @@ preOrder.addEventListener('click', () => {
     inOrder_anime = false
     postOrder_anime = false
 
+    //hide btn
+    isBtnShow(true)
+
     //make preOrder array
     preOrder_traversal(0);
 
@@ -266,6 +269,7 @@ preOrder.addEventListener('click', () => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
             traversalArr = []//init
+            isBtnShow(false)//show btn
             clearInterval(timer)
         }
     }, 1000);
@@ -274,6 +278,7 @@ preOrder.addEventListener('click', () => {
 inOrder.addEventListener('click', () => {
     traversalIndex = 0
     changeWhite = true
+
     preOrder_anime = false
     inOrder_anime = true
     postOrder_anime = false
@@ -281,11 +286,15 @@ inOrder.addEventListener('click', () => {
     //make preOrder array
     inOrder_traversal(0);
 
+    //hide btn
+    isBtnShow(true)
+
     //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
     let timer = setInterval(() => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
             traversalArr = []//init
+            isBtnShow(false)//show btn
             clearInterval(timer)
         }
     }, 1000);
@@ -301,15 +310,20 @@ postOrder.addEventListener('click', () => {
     //make preOrder array
     postOrder_traversal(0);
 
+    //hide btn
+    isBtnShow(true);
+
     //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
     let timer = setInterval(() => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
             traversalArr = []//init
+            isBtnShow(false)//show btn
             clearInterval(timer)
         }
     }, 1000);
 })
+
 //       3
 //     /   \
 //    4     5 
@@ -349,7 +363,7 @@ function postOrder_traversal(index) {
 function OrderAnime() {
     if (preOrder_anime || inOrder_anime || postOrder_anime) {
         if (traversalIndex < traversalArr.length) {
-            ctx.fillStyle = 'rgba(255,0,0,0.8)';
+            ctx.fillStyle = 'rgba(255,0,0,0.5)';
             ctx.beginPath();
             ctx.arc(traversalArr[traversalIndex][0], traversalArr[traversalIndex][1], 30, 0, Math.PI * 2);
             ctx.fill();
@@ -357,6 +371,21 @@ function OrderAnime() {
     }
 }
 
+//hide & show btn
+function isBtnShow(bool) {
+    if (bool) {
+        //hide btn
+        preOrder.disabled = true
+        inOrder.disabled = true
+        postOrder.disabled = true
+    }
+    else {
+        //hide btn
+        preOrder.disabled = false
+        inOrder.disabled = false
+        postOrder.disabled = false
+    }
+}
 //methods
 const insertValue = document.querySelector('.insertValue');
 const insertGo = document.querySelector('.insertGo');
