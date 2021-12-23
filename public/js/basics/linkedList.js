@@ -254,3 +254,17 @@ deleteGo.addEventListener('click', function () {
     deleteIndex.value = ""
     indexNow = null
 })
+
+//tips
+const tip = document.querySelector('.tips');
+
+tip.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Tips',
+        html: "LinkedList是以串列連接的資料結構,優勢是可以快速插入資料和刪除,但劣勢搜尋數值必須每次都從頭開始<br><br>" +
+            "append(value) //從串列最尾端插入數值<br>" +
+            "insert(index,value) //從特定位置插入數值<br>" +
+            "delete(index) //從特定位置刪除數值<br>"
+
+    })
+})

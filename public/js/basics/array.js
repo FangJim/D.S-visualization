@@ -181,8 +181,10 @@ const tip = document.querySelector('.tips');
 
 tip.addEventListener('click', () => {
     Swal.fire({
-        title: 'Teaching',
-        html: "Array是一個連續記憶體配置的資料結構,可以透過索引值去快速取得數值,亦可刪除",
+        title: 'Tips',
+        html: "Array是一個連續記憶體配置的資料結構,可以透過索引值去儲存數值,亦可刪除 <br><br>" +
+            "Insert(index,value) //於index值位置插入value<br>" +
+            "Delete(index) //刪除該index之值<br>"
 
     })
 })

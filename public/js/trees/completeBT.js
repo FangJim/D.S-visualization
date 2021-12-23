@@ -1,4 +1,4 @@
-let completeBT_data = [2, 35, 7, 8, 9, 4, 1, 2, 35];
+let completeBT_data = [];
 let middle = [] //store node's x
 let height = []//store node's y
 
