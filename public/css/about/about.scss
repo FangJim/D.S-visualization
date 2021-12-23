@@ -12,9 +12,47 @@ body {
 }
 
 .title{
-    color: white;
+    color: transparent;
     margin-bottom: 25px;
     text-align: center;
+    font-size: 100px;
+    display: flex;
+    font-family: 'Bad Script',monospace;
+}
+
+.title span{
+    animation: animate 3s linear infinite;
+    animation-delay: calc(0.1s * var(--i));
+}
+
+@keyframes animate{
+    0%{
+        color:#fff;
+        //filter:blur(0.5px) hue-rotate(0deg);
+        text-shadow: 0 0 10px #00b3ff,
+        0 0 20px #00b3ff,
+        0 0 40px #00b3ff,
+        0 0 80px #00b3ff,
+        0 0 120px #00b3ff,
+        0 0 200px #00b3ff,
+        0 0 300px #00b3ff,
+        0 0 400px #00b3ff;
+    }
+    30%,70%{
+        color:#fff;
+        //filter:blur(0.5px) hue-rotate(360deg);
+        text-shadow: 0 0 10px #00b3ff,
+        0 0 20px #00b3ff,
+        0 0 40px #00b3ff,
+        0 0 80px #00b3ff,
+        0 0 120px #00b3ff,
+        0 0 200px #00b3ff;
+    }
+    100%{
+        color:transparent;
+        box-shadow: none;
+        filter:blur(2px) hue-rotate(0deg);
+    }
 }
 
 .intr{
@@ -24,17 +62,18 @@ body {
     float: left;
     justify-content: center;
     display: flex;
-    margin-top: 13px;
+    margin-top: 18px;
 }
 
 .text{
     color: white;
     width: 250px;
     float: left;
-    margin-right: 20px;
     margin-left: 20px;
+    margin-right: 20px;
+    font-family: 'Bad Script';
+    text-align:center
 }
-
 
 .row1 .column{
     margin: 0 10px;
@@ -89,7 +128,7 @@ body {
 .row1 .column .details h3 p{
     margin: 0;
     padding: 0;
-    color: red;
+    color: #00b3ff;
     font-size: 14px;
     font-weight: 900;
     // text-transform: uppercase;
@@ -118,5 +157,5 @@ body {
 
 .row1 .column .details ul a:hover .fa{
     transform: rotateY(180deg);
-    color: red;
+    color: #00b3ff;
 }

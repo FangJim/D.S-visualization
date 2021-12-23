@@ -1,5 +1,6 @@
-let completeBT_data = [];
-let middle = []
+let completeBT_data = [2, 3, 4, 5, 6, 7, 8, 9];
+let middle = [] //store node's x
+let height = []//store node's y
 
 //node structure
 const nodeStructure = {
@@ -18,14 +19,18 @@ let effect = {
 }
 
 //global variables
-let recordMiddle;
+let recordMiddle, recordHeight;
 let fontOffset = 0;
 let row_count = 0;
 let have_rChild = false
-let deleteEffect = false
+let changeWhite = false
+let preOrder_anime = false
+let inOrder_anime = false
+let postOrder_anime = false
 let lChild_color = 'white'
 let rChild_color = 'white'
-
+let traversalArr = []
+let traversalIndex = 0
 //canvas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -36,6 +41,8 @@ function update() {
 
     drawTree();
 
+    OrderAnime();
+
     requestAnimationFrame(update);
 }
 
@@ -43,6 +50,7 @@ function drawTree() {
     let level = 1;
     let exp = 0;
     let count = 0;
+
     for (let i = 0; i < completeBT_data.length; i++) {
         //calculate height
         count++;
@@ -76,7 +84,7 @@ function drawTree() {
 function drawNode(nodeNumber, level) {
     //effect
     ctx.lineWidth = 4;
-    if (deleteEffect) {
+    if (changeWhite) {
         ctx.strokeStyle = 'white';
     }
     else if (nodeNumber === completeBT_data.length - 1) {//the last one
@@ -89,19 +97,30 @@ function drawNode(nodeNumber, level) {
     //draw
     ctx.beginPath();
     if (nodeNumber === 0) {
+        //root x and y
         recordMiddle = 800;
-        ctx.arc(middle[0], nodeStructure.nodeY, 30, 0, Math.PI * 2);
+        recordHeight = 50;
+
+        ctx.arc(middle[0], height[0], 30, 0, Math.PI * 2);
     }
     else if (nodeNumber % 2 === 1) {
         recordMiddle = middle[Math.floor(nodeNumber / 2)] - nodeSpacing(nodeNumber)
-        ctx.arc(recordMiddle, nodeStructure.nodeY + level * 90, 30, 0, Math.PI * 2);
+        recordHeight = 50 + level * 90
+
+        ctx.arc(recordMiddle, recordHeight, 30, 0, Math.PI * 2);
     }
     else if (nodeNumber % 2 === 0) {
         recordMiddle = middle[Math.floor(nodeNumber / 2) - 1] + nodeSpacing(nodeNumber)
-        ctx.arc(recordMiddle, nodeStructure.nodeY + level * 90, 30, 0, Math.PI * 2);
+        recordHeight = nodeStructure.nodeY + level * 90
+
+        ctx.arc(recordMiddle, recordHeight, 30, 0, Math.PI * 2);
     }
 
+    //store node's x using map
     middle[nodeNumber] = recordMiddle
+
+    //store node's y using map
+    height[nodeNumber] = recordHeight
 
     row_count++;
     ctx.stroke();
@@ -134,7 +153,7 @@ function drawLine(middle) {
         let endX_rChild = middle[Math.floor(i / 2) * 2 + 2]//find rChild position
         let endY = y * level + yOffset + 30
 
-        if (deleteEffect) {
+        if (changeWhite) {
             lChild_color = 'white';
             rChild_color = 'white';
         }
@@ -142,12 +161,13 @@ function drawLine(middle) {
             lChild_color = 'white'
             rChild_color = `rgba(255,0,0,${effect.alpha})`;
         }
-        else if (i === middle.length - 1) {//only lChild the last one draw red
+        else if (i === middle.length - 1) {// only lChild the last one draw red
             lChild_color = `rgba(255,0,0,${effect.alpha})`;
         }
         else {//others
             lChild_color = 'white'
             rChild_color = 'white'
+
         }
 
 
@@ -179,7 +199,7 @@ function drawData() {
     for (let i = 0; i < completeBT_data.length; i++) {
         ctx.font = '28px Arial';
         //effect
-        if (deleteEffect) {
+        if (changeWhite) {
             ctx.fillStyle = 'white';
         }
         else if (i === completeBT_data.length - 1) {//the last one
@@ -232,14 +252,110 @@ const inOrder = document.querySelector('.inOrder');
 const postOrder = document.querySelector('.postOrder');
 
 preOrder.addEventListener('click', () => {
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = true
+    inOrder_anime = false
+    postOrder_anime = false
 
+    //make preOrder array
+    preOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === completeBT_data.length) {
+            traversalArr = []//init
+            clearInterval(timer)
+        }
+    }, 1000);
 })
+
 inOrder.addEventListener('click', () => {
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = false
+    inOrder_anime = true
+    postOrder_anime = false
 
+    //make preOrder array
+    inOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === completeBT_data.length) {
+            traversalArr = []//init
+            clearInterval(timer)
+        }
+    }, 1000);
 })
+
 postOrder.addEventListener('click', () => {
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = false
+    inOrder_anime = false
+    postOrder_anime = true
 
+    //make preOrder array
+    postOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === completeBT_data.length) {
+            traversalArr = []//init
+            clearInterval(timer)
+        }
+    }, 1000);
 })
+//       3
+//     /   \
+//    4     5 
+//   / \   / \
+//  8  7   4  2
+//index:  0 1 2 3 4 5 6
+// data: [3,4,5,8,7,4,2]
+//preOrder: 3 -> 4 -> 8 -> 7 -> 5 -> 4 -> 2
+//inOrder:  8 -> 4 -> 7 -> 3 -> 4 -> 5 -> 2
+//postOrder:8 -> 7 -> 4 -> 4 -> 2 -> 5 -> 3
+
+function preOrder_traversal(index) {
+    if (index < middle.length && preOrder_anime) {
+        traversalArr.push([middle[index], height[index]])
+        preOrder_traversal(index * 2 + 1);
+        preOrder_traversal(index * 2 + 2);
+    }
+}
+
+function inOrder_traversal(index) {
+    if (index < middle.length && inOrder_anime) {
+        inOrder_traversal(index * 2 + 1);
+        traversalArr.push([middle[index], height[index]])
+        inOrder_traversal(index * 2 + 2);
+    }
+}
+
+function postOrder_traversal(index) {
+    if (index < middle.length && postOrder_anime) {
+        postOrder_traversal(index * 2 + 1);
+        postOrder_traversal(index * 2 + 2);
+        traversalArr.push([middle[index], height[index]])
+    }
+}
+
+//keep drawing
+function OrderAnime() {
+    if (preOrder_anime || inOrder_anime || postOrder_anime) {
+        if (traversalIndex < traversalArr.length) {
+            ctx.fillStyle = 'rgba(255,0,0,0.8)';
+            ctx.beginPath();
+            ctx.arc(traversalArr[traversalIndex][0], traversalArr[traversalIndex][1], 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+}
 
 //methods
 const insertValue = document.querySelector('.insertValue');
@@ -249,7 +365,7 @@ const deleteGo = document.querySelector('.deleteGo');
 
 
 insertGo.addEventListener('click', () => {
-    deleteEffect = false
+    changeWhite = false
     if (insertValue.value == "") {
         alert('You should input the value')
         return;
@@ -270,7 +386,7 @@ insertGo.addEventListener('click', () => {
 })
 
 deleteGo.addEventListener('click', () => {
-    deleteEffect = true //change all to white
+    changeWhite = true //change all to white
     if (deleteIndex.value === "") {
         alert('You should input the delete index')
         return
