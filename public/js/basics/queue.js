@@ -206,3 +206,17 @@ dequeueGo.addEventListener('click', () => {
     enqueueGo.disabled = true;
     dequeueGo.disabled = true;
 })
+
+
+//tips
+const tip = document.querySelector('.tips');
+
+tip.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Tips',
+        html: "Queue是一個First in first out的結構,可以想像成是排隊的行為<br><br>" +
+            "Enqueue(value): 將數值從queue的尾端加入,並將該節點設成Rear(尾端)<br>" +
+            "Dequeue(): 輸出Queue中Front(前端)的值,並將Front移出Queue"
+
+    })
+})

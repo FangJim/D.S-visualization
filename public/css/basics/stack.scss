@@ -1,6 +1,7 @@
 @import '../modules/variables';
 @import '../modules/functions';
 @import '../modules/inputStyle';
+@import '../modules/info';
 
 body {
     background-color: map_get($background, color);

@@ -187,3 +187,15 @@ popGo.addEventListener('click', function () {
     popAnime = true;
 })
 
+//tips
+const tip = document.querySelector('.tips');
+
+tip.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Tips',
+        html: "Stack是一個First in last out的結構,可以想像成蓋房子必須一層一層堆上去,拆掉的話必須從頂端一層一層拆掉<br><br>" +
+            "push(value): 將value值推進Stack,來到Stack頂端<br>" +
+            "pop(): 將Stack最頂端的值取出來"
+
+    })
+})

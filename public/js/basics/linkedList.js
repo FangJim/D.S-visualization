@@ -95,6 +95,15 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let offsetValue = 0;
 let indexNow = 0;
+
+//search var.
+let searchAnime = false;
+let search_index = 0;
+let searchX = 0;
+let searchY = 75;
+let searchTemp;
+let isFind = false
+
 const effect = {
     r: 255,
     g: 255,
@@ -108,6 +117,8 @@ update();
 //main function
 function update() {
     drawLinkedList();
+
+    drawSearchCircle();
 
     requestAnimationFrame(update);
 }
@@ -190,6 +201,18 @@ function buildLinkedList(index, content) {
     ctx.fillText('➝', (index % 10) * 100 + 70, y + 35)
 }
 
+function drawSearchCircle() {
+    if (searchAnime) {
+        ctx.beginPath();
+        ctx.arc((search_index % 10) * 100 + 30, searchY, 30, 0, Math.PI * 2);
+        if (isFind) {
+            ctx.strokeStyle = 'rgb(0,255, 0)';
+        } else {
+            ctx.strokeStyle = 'rgb(255,0, 0)';
+        }
+        ctx.stroke();
+    }
+}
 
 
 //event listen
@@ -197,10 +220,12 @@ const appendValue = document.querySelector('.appendValue');
 const insertIndex = document.querySelector('.insertIndex');
 const insertValue = document.querySelector('.insertValue');
 const deleteIndex = document.querySelector('.deleteIndex');
+const searchValue = document.querySelector('.searchValue');
 
 const appendGo = document.querySelector('.appendGo');
 const insertGo = document.querySelector('.insertGo');
 const deleteGo = document.querySelector('.deleteGo');
+const searchGo = document.querySelector('.searchGo');
 
 
 //append
@@ -255,16 +280,47 @@ deleteGo.addEventListener('click', function () {
     indexNow = null
 })
 
+//search
+searchGo.addEventListener('click', function () {
+    searchAnime = true
+    let linkedList_length = linkedList.size();
+    let linkedList_contents = linkedList.print();
+    let ans = [];
+    search_index = 0
+    let timer = setInterval(() => {
+        if (search_index < linkedList_length - 1) {
+            console.log(searchValue.value)
+            if (searchValue.value === linkedList_contents[search_index + 1]) {
+                isFind = true
+                ans.push(search_index)
+            } else {
+                isFind = false
+            }
+
+            search_index++;
+            if (search_index > 9) searchY = 175
+            if (search_index > 19) searchY = 275
+        }
+        else {
+            searchAnime = false
+            clearInterval(timer);
+            Swal.fire({
+                title: `Found element ${searchValue.value} in index ${ans}`,
+            })
+        }
+    }, 1000)
+})
+
 //tips
 const tip = document.querySelector('.tips');
 
 tip.addEventListener('click', () => {
     Swal.fire({
         title: 'Tips',
-        html: "LinkedList是以串列連接的資料結構,優勢是可以快速插入資料和刪除,但劣勢搜尋數值必須每次都從頭開始<br><br>" +
+        html: "LinkedList是以串列連接的資料結構,優勢是可以快速插入資料和刪除,但劣勢是搜尋數值必須每次都從頭開始<br><br>" +
             "append(value) //從串列最尾端插入數值<br>" +
             "insert(index,value) //從特定位置插入數值<br>" +
-            "delete(index) //從特定位置刪除數值<br>"
-
+            "delete(index) //從特定位置刪除數值<br>" +
+            "search(value) //從List的頭依序尋找數值<br>"
     })
 })
