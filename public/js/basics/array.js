@@ -159,7 +159,6 @@ insertGo.addEventListener('click', () => {
 deleteGo.addEventListener('click', () => {
     //effect
     effect.alpha = 0;
-
     //out of range
     if (deleteIndex.value > 19) {
         deleteIndex.value = ""

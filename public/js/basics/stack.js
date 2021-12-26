@@ -168,7 +168,6 @@ pushGo.addEventListener('click', function () {
         pushGo.disabled = false;
         popGo.disabled = false;
         Swal.fire({
-            icon: 'error',
             title: 'Please fill the value'
         })
 

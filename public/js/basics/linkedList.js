@@ -244,7 +244,6 @@ appendGo.addEventListener('click', function () {
     //no num
     if (appendValue.value == "") {
         Swal.fire({
-            icon: 'error',
             title: 'Please fill the value'
         })
         return;
@@ -270,7 +269,6 @@ insertGo.addEventListener('click', function () {
     //both need to have value
     if (insertIndex.value == "" || insertValue.value == "") {
         Swal.fire({
-            icon: 'error',
             title: 'Please fill both the index and value'
         })
         return;

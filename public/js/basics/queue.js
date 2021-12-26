@@ -184,7 +184,6 @@ const dequeueGo = document.querySelector('.dequeueGo');
 enqueueGo.addEventListener('click', () => {
     if (enqueueValue.value === "") {
         Swal.fire({
-            icon: 'error',
             title: 'Please,fill the value',
         })
         return
