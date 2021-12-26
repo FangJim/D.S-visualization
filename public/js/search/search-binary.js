@@ -1,41 +1,166 @@
+const fromValue = document.querySelector(".fromValue");
+const toValue = document.querySelector(".toValue");
+const indexValue = document.querySelector(".indexValue");
 const searchValue = document.querySelector(".searchValue");
 const searchGo = document.querySelector(".searchGo");
-const rects = document.querySelectorAll("rect");
+const sort = document.querySelector(".sort");
+const finds = document.querySelector(".find");
+const step1 = document.querySelector(".step1");
+const middle = document.querySelector(".middle");
+const left = document.querySelector(".left");
+const right = document.querySelector(".right");
+const tip = document.querySelector(".tips");
+let rects = document.querySelectorAll("rect");
 
-searchGo.addEventListener("click", () => {
-    searchGo.disabled=true;
-    let RectArray=[];
-    let l = 0;
-    let u = 49;
-    let m = 0;
-    for (let i = 0; i < 50; i++) {
-        rects[i].style.fill="#09c"   
-    }
-    rects.forEach((rect)=>{
-        RectArray.push(rect.height.animVal.value)
+let l = 0;
+let u = 49;
+let m = 0;
+let SortArray = [];
+searchGo.disabled = true;
+
+function Draw() {
+  d3.selectAll("svg").remove();
+  var svg = d3
+    .select(".show")
+    .append("svg")
+    .attr("width", svg_width)
+    .attr("height", svg_height);
+  svg
+    .selectAll("rect")
+    .data(SortArray)
+    .enter()
+    .append("rect")
+    .attr("class", "Rect")
+    .attr("fill", "#09c")
+    .attr("x", (d, i) => {
+      return i * (svg_width / SortArray.length);
     })
-    let intervalID = setInterval(()=>{
-        m=Math.floor((l+u)/2);
-        console.log(m);
-        if(l>u){ 
-            clearInterval(intervalID);
-            searchGo.disabled=false;
-        }
-        if(RectArray[m]/4 == searchValue.value){
-            rects[m].style.fill="green"
-            clearInterval(intervalID);
-            searchGo.disabled=false;
-        }
-        else if(RectArray[m]/4 > searchValue.value){
-            rects[m].style.fill="red"  
-            u=m-1
-        }
-        else if(RectArray[m]/4 < searchValue.value){
-            rects[m].style.fill="red"  
-            l=m+1
-        }
-    },800)
+    .attr("y", (d) => {
+      return svg_height - d * 4;
+    })
+    .attr("width", svg_width / SortArray.length - 4)
+    .attr("height", (d) => {
+      return d * 4;
+    });
+  svg
+    .selectAll("text")
+    .data(SortArray)
+    .enter()
+    .append("text")
+    .text(function (d) {
+      return d;
+    })
+    .attr("fill", "#ffff00")
+    .attr("font-size", "13px")
+    .attr("x", (d, i) => {
+      return i * (svg_width / SortArray.length) + 3;
+    })
+    .attr("y", (d) => {
+      return svg_height - d * 4 - 3;
+    });
+  var svgindex = d3
+    .select(".index")
+    .append("svg")
+    .attr("width", svgindex_width)
+    .attr("height", svgindex_height);
+  svgindex
+    .selectAll("text")
+    .data(indexArray)
+    .enter()
+    .append("text")
+    .text(function (d) {
+      return d;
+    })
+    .attr("fill", "#ffa500")
+    .attr("font-size", "13px")
+    .attr("x", (d, i) => {
+      return i * (svgindex_width / indexArray.length) + 3;
+    })
+    .attr("y", (d) => {
+      return svgindex_height;
+    });
+}
+
+async function Catch() {
+  //console.log("Start");
+  await Draw();
+  rects = document.querySelectorAll("rect");
+  //console.log(rects);
+  //console.log("Finish waiting");
+}
+
+sort.addEventListener("click", () => {
+  step1.style.color = "red";
+  l = 0;
+  u = 49;
+  m = 0;
+  sort.disabled = true;
+  searchGo.disabled = false;
+  rects.forEach((rect) => {
+    SortArray.push(rect.height.animVal.value / 4);
+  });
+  SortArray.sort();
+  Catch();
 });
 
+searchGo.addEventListener("click", () => {
+  step1.style.color = "white";
+  searchGo.disabled = true;
+  let l = 0;
+  let u = 49;
+  let m = 0;
+  for (let i = 0; i < 50; i++) {
+    rects[i].style.fill = "#09c";
+  }
+  let intervalID = setInterval(() => {
+    m = Math.floor((l + u) / 2);
+    let change;
+    if (l > u) {
+      clearInterval(intervalID);
+      finds.innerHTML = "Sorry,the value didn't find!!";
+      searchGo.disabled = false;
+    } else {
+      if (SortArray[m] == searchValue.value) {
+        rects[m].style.fill = "green";
+        clearInterval(intervalID);
+        searchGo.disabled = false;
+        change = 2;
+      } else if (SortArray[m] > searchValue.value) {
+        rects[m].style.fill = "red";
+        change = 1;
+        u = m - 1;
+      } else if (SortArray[m] < searchValue.value) {
+        rects[m].style.fill = "red";
+        change = 0;
+        l = m + 1;
+      }
+      middle.style.color = "red";
+      left.style.color = "white";
+      right.style.color = "white";
+      left.style.fontSize = 20 + "px";
+      right.style.fontSize = 20 + "px";
+    }
+    setTimeout(() => {
+      middle.style.color = "white";
+      if (change === 1) {
+        left.style.color = "red";
+        left.style.fontSize = 50 + "px";
+      } else if (change === 0) {
+        right.style.color = "red";
+        right.style.fontSize = 50 + "px";
+      }
+    }, 2000);
+  }, 4000);
+});
 
-
+tip.addEventListener("click", () => {
+  Swal.fire({
+    title: "Tips",
+    html:
+      "Binary search 是針對以“排序好”的資料進行搜尋<br><br>" +
+      "透過算出中間值(middle)，middle=(起點(l)+終點(u))/2<br>" +
+      "若middle大於搜尋值，則往左邊尋找，且u=middle-1<br>" +
+      "若middle小於搜尋值，則往右邊尋找，且l=middle+1<br>" +
+      "重複此動作直到找到搜尋值或l>=u",
+  });
+});

@@ -136,7 +136,11 @@ insertGo.addEventListener('click', () => {
     //out of range
     if (insertIndex.value > 19) {
         insertIndex.value = ""
-        alert('Index out of range')
+        Swal.fire({
+            icon: 'info',
+            title: 'Out of range',
+            html: 'Sorry,為了視覺化的呈現我們設定Array的長度為20,但在程式中只要記憶體空間足夠您就可以設定你想要的Array大小'
+        })
         return;
     }
 
@@ -159,7 +163,11 @@ deleteGo.addEventListener('click', () => {
     //out of range
     if (deleteIndex.value > 19) {
         deleteIndex.value = ""
-        alert('Index out of range')
+        Swal.fire({
+            icon: 'info',
+            title: 'Out of range',
+            html: 'Sorry,為了視覺化的呈現我們設定Array的長度為20,但在程式中只要記憶體空間足夠您就可以設定你想要的Array大小'
+        })
         return;
     }
 

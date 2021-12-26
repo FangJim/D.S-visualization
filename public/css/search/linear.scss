@@ -1,6 +1,7 @@
 @import '../modules/variables';
 @import '../modules/functions';
 @import '../modules/inputStyle';
+@import '../modules/info';
 
 body {
     background-color: map_get($background, color);
@@ -9,6 +10,10 @@ body {
 .container{
     @include flexCenter(column);
 }
-.show{
+.index{
     margin-bottom: 50px;
+}
+.find{
+    font-size: 30px;
+    color: #fff;
 }

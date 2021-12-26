@@ -1,6 +1,7 @@
 let completeBT_data = [];
 let middle = [] //store node's x
 let height = []//store node's y
+let traversalOutput = []
 
 //node structure
 const nodeStructure = {
@@ -268,6 +269,12 @@ preOrder.addEventListener('click', () => {
     let timer = setInterval(() => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `PreOrder output`,
+                html: `${traversalOutput}`
+            })
+            traversalOutput = []//init
             traversalArr = []//init
             isBtnShow(false)//show btn
             clearInterval(timer)
@@ -293,6 +300,12 @@ inOrder.addEventListener('click', () => {
     let timer = setInterval(() => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `InOrder output`,
+                html: `${traversalOutput}`
+            })
+            traversalOutput = []//init
             traversalArr = []//init
             isBtnShow(false)//show btn
             clearInterval(timer)
@@ -317,6 +330,12 @@ postOrder.addEventListener('click', () => {
     let timer = setInterval(() => {
         traversalIndex++
         if (traversalIndex === completeBT_data.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `PostOrder output`,
+                html: `${traversalOutput}`
+            })
+            traversalOutput = []//init
             traversalArr = []//init
             isBtnShow(false)//show btn
             clearInterval(timer)
@@ -337,7 +356,10 @@ postOrder.addEventListener('click', () => {
 
 function preOrder_traversal(index) {
     if (index < middle.length && preOrder_anime) {
-        traversalArr.push([middle[index], height[index]])
+        //for traversal path
+        traversalArr.push([middle[index], height[index]]);
+        //for traversal output
+        traversalOutput.push(completeBT_data[index]);
         preOrder_traversal(index * 2 + 1);
         preOrder_traversal(index * 2 + 2);
     }
@@ -347,6 +369,8 @@ function inOrder_traversal(index) {
     if (index < middle.length && inOrder_anime) {
         inOrder_traversal(index * 2 + 1);
         traversalArr.push([middle[index], height[index]])
+        //for traversal output
+        traversalOutput.push(completeBT_data[index]);
         inOrder_traversal(index * 2 + 2);
     }
 }
@@ -356,6 +380,8 @@ function postOrder_traversal(index) {
         postOrder_traversal(index * 2 + 1);
         postOrder_traversal(index * 2 + 2);
         traversalArr.push([middle[index], height[index]])
+        //for traversal output
+        traversalOutput.push(completeBT_data[index]);
     }
 }
 

@@ -156,7 +156,10 @@ pushGo.addEventListener('click', function () {
     pushGo.disabled = true;
     popGo.disabled = true;
     if (stack.size() === 8) {
-        alert('Sorry, Stack is full');
+        Swal.fire({
+            icon: 'info',
+            html: 'Sorry,為了視覺化的呈現我們設定Stack的長度為8,但在程式中只要記憶體空間足夠您就可以繼續push值進入'
+        })
         pushGo.disabled = false;
         popGo.disabled = false;
         return;
@@ -164,7 +167,11 @@ pushGo.addEventListener('click', function () {
     if (pushValue.value == "") {
         pushGo.disabled = false;
         popGo.disabled = false;
-        alert('Please insert a numbers');
+        Swal.fire({
+            icon: 'error',
+            title: 'Please fill the value'
+        })
+
         return;
     }
     temp = pushValue.value;
@@ -175,6 +182,16 @@ pushGo.addEventListener('click', function () {
 popGo.addEventListener('click', function () {
     pushGo.disabled = true;
     popGo.disabled = true;
+
+    if (stack.size() === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Stack is empty'
+        })
+        pushGo.disabled = false;
+        popGo.disabled = false;
+        return
+    }
     //top one
     temp = stack.peek();
 

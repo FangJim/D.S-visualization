@@ -99,10 +99,10 @@ let indexNow = 0;
 //search var.
 let searchAnime = false;
 let search_index = 0;
-let searchX = 0;
 let searchY = 75;
 let searchTemp;
 let isFind = false
+let judge;
 
 const effect = {
     r: 255,
@@ -165,8 +165,8 @@ function buildLinkedList(index, content) {
     //new one must be red
     if (index == indexNow) {
         effect.r = 255;
-        effect.g = 121;
-        effect.b = 77;
+        effect.g = 0;
+        effect.b = 0;
     }
     else {
         effect.r = 255;
@@ -202,10 +202,12 @@ function buildLinkedList(index, content) {
 }
 
 function drawSearchCircle() {
+    let linkedList_contents = linkedList.print();
     if (searchAnime) {
         ctx.beginPath();
         ctx.arc((search_index % 10) * 100 + 30, searchY, 30, 0, Math.PI * 2);
-        if (isFind) {
+        //because setInterval will run immediately and it'll caused to not search for the first one 
+        if (isFind || searchValue.value === linkedList_contents[judge]) {
             ctx.strokeStyle = 'rgb(0,255, 0)';
         } else {
             ctx.strokeStyle = 'rgb(255,0, 0)';
@@ -231,28 +233,54 @@ const searchGo = document.querySelector('.searchGo');
 //append
 appendGo.addEventListener('click', function () {
     effect.alpha = 0
+    //out of canvas
+    if (linkedList.size() == 30) {
+        Swal.fire({
+            icon: 'info',
+            html: "Sorry, canvas已滿,為了視覺化的呈現,不得再讓您新增節點,但在程式中如果你還有足夠的記憶體空間,就可以再新增節點"
+        })
+        return;
+    }
     //no num
     if (appendValue.value == "") {
-        alert('Please fill the value')
+        Swal.fire({
+            icon: 'error',
+            title: 'Please fill the value'
+        })
         return;
     }
     linkedList.append(appendValue.value)
     appendValue.value = ""
-
     //for know effect in which one
     indexNow = linkedList.size() - 1
 })
 
 //insert
 insertGo.addEventListener('click', function () {
+    //effect
     effect.alpha = 0
+    //out of canvas
+    if (linkedList.size() == 30) {
+        Swal.fire({
+            icon: 'info',
+            html: "Sorry, canvas已滿,為了視覺化的呈現,不得再讓您新增節點,但在程式中如果你還有足夠的記憶體空間,就可以再新增節點"
+        })
+        return;
+    }
     //both need to have value
     if (insertIndex.value == "" || insertValue.value == "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Please fill both the index and value'
+        })
         return;
     }
     //can not insert out of length
     if (insertIndex.value > linkedList.size()) {
-        alert('Out of length')
+        Swal.fire({
+            icon: 'error',
+            title: '你輸入的index超過目前的鏈結長度'
+        })
         insertIndex.value = ""
         insertValue.value = ""
         return
@@ -271,7 +299,10 @@ insertGo.addEventListener('click', function () {
 deleteGo.addEventListener('click', function () {
     effect.alpha = 0
     if (deleteIndex.value > linkedList.size()) {
-        alert('index is not exist')
+        Swal.fire({
+            icon: 'error',
+            title: '你想刪除的節點不存在'
+        })
         deleteIndex.value = ""
         return;
     }
@@ -282,31 +313,51 @@ deleteGo.addEventListener('click', function () {
 
 //search
 searchGo.addEventListener('click', function () {
+    indexNow = null
+    searchGo.disabled = true
     searchAnime = true
     let linkedList_length = linkedList.size();
     let linkedList_contents = linkedList.print();
+    //init
     let ans = [];
-    search_index = 0
+    search_index = 0;
+    searchY = 75;
+    judge = 0;
+    //timer
     let timer = setInterval(() => {
         if (search_index < linkedList_length - 1) {
-            console.log(searchValue.value)
-            if (searchValue.value === linkedList_contents[search_index + 1]) {
+            if (searchValue.value == linkedList_contents[search_index + 1]) {
                 isFind = true
-                ans.push(search_index)
+                ans.push(search_index + 1)
             } else {
                 isFind = false
             }
-
             search_index++;
+            judge = -1
+            //change row
             if (search_index > 9) searchY = 175
             if (search_index > 19) searchY = 275
         }
         else {
+            searchGo.disabled = false
             searchAnime = false
             clearInterval(timer);
-            Swal.fire({
-                title: `Found element ${searchValue.value} in index ${ans}`,
-            })
+            if (searchValue.value == linkedList_contents[0]) {
+                Swal.fire({
+                    title: `Found element ${searchValue.value} in index 0,${ans}`,
+                })
+            }
+            else if (ans.length === 0) {
+                Swal.fire({
+                    title: `Not found!`,
+                })
+            }
+            else {
+                Swal.fire({
+                    title: `Found element ${searchValue.value} in index ${ans}`,
+                })
+            }
+            searchValue.value = ""
         }
     }, 1000)
 })

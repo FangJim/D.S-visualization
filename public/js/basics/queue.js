@@ -125,7 +125,7 @@ function dequeueObj() {
         dequeueGo.disabled = false;
     }
     if (dequeueAnime) {
-        move.X -= 2
+        move.X -= 5
         offset(temp);
         ctx.strokeStyle = `red`;
         ctx.fillStyle = `red`;
@@ -183,12 +183,18 @@ const dequeueGo = document.querySelector('.dequeueGo');
 
 enqueueGo.addEventListener('click', () => {
     if (enqueueValue.value === "") {
-        alert('Fill the value please')
+        Swal.fire({
+            icon: 'error',
+            title: 'Please,fill the value',
+        })
         return
     }
     if (queue.size() == 8) {
-        alert('Sorry, the queue is full')
-        return
+        Swal.fire({
+            icon: 'info',
+            html: 'Sorry,為了視覺化的呈現我們設定Queue的長度為8,但在程式中只要記憶體空間足夠您就可以繼續Enqueue值進入'
+        })
+        return;
     }
 
     move.alpha = 0;
