@@ -29,13 +29,14 @@ function update() {
 }
 
 function offset(value) {
-    if (value > 999) {
+    let length = value.toString().length
+    if (length > 3) {
         offsetValue = 25;
     }
-    else if (value > 99) {
+    else if (length > 2) {
         offsetValue = 30;
     }
-    else if (value > 9) {
+    else if (length > 1) {
         offsetValue = 35;
     }
     else {

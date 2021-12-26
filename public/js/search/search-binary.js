@@ -157,10 +157,13 @@ tip.addEventListener("click", () => {
   Swal.fire({
     title: "Tips",
     html:
-      "Binary search 是針對以“排序好”的資料進行搜尋<br><br>" +
-      "透過算出中間值(middle)，middle=(起點(l)+終點(u))/2<br>" +
-      "若middle大於搜尋值，則往左邊尋找，且u=middle-1<br>" +
-      "若middle小於搜尋值，則往右邊尋找，且l=middle+1<br>" +
-      "重複此動作直到找到搜尋值或l>=u",
+      "Binary search 是針對已“排序好”的資料進行搜尋<br><br>" +
+      "設定begin = 0<br>" +
+      "以及end = 資料的長度<br><br>" +
+
+      "1.算出中間的位置(middle)<br>middle=(begin+ end)/2<br><br>" +
+      "2.若middle位置的數值小於搜尋值，代表middle左邊的值都小於我，所以往右邊尋找，故begin = middle+1<br><br>" +
+      "3.若middle位置的數值大於搜尋值，代表middle右邊的值都大於我，所以往左邊尋找，故end = middle-1<br><br>" +
+      "重複以上動作直到找到搜尋值或begin >= end(未找到)",
   });
 });

@@ -3,7 +3,7 @@ const searchGo = document.querySelector(".searchGo");
 const rects = document.querySelectorAll("rect");
 const finds = document.querySelector(".find");
 const tip = document.querySelector(".tips");
-
+let ans //for store find index
 searchGo.addEventListener("click", () => {
   searchGo.disabled = true;
   let RectArray = [];
@@ -20,12 +20,21 @@ searchGo.addEventListener("click", () => {
       clearInterval(intervalID);
       searchGo.disabled = false;
       if (flag === 0) {
-        finds.innerHTML = "Sorry,the value didn't find!!";
+        Swal.fire({
+          title: "Sorry, the value didn't found"
+        });
       }
+      else {
+        Swal.fire({
+          title: `Find the value ${searchValue.value} in index ${ans}`
+        });
+      }
+      searchValue.value = ""
     } else {
       if (RectArray[i] / 4 == searchValue.value) {
         rects[i].style.fill = "green";
         flag = 1;
+        ans = i
       } else {
         rects[i].style.fill = "red";
       }
@@ -38,7 +47,6 @@ tip.addEventListener("click", () => {
   Swal.fire({
     title: "Tips",
     html:
-      "Linear search 的資料不需經過排序<br><br>" +
-      "透過從頭開始進行搜尋，直到找到搜尋值或找不到為止",
+      "Linear search為線性搜索,搜索過程必須從頭一步步比對,假設數據皆不重複,則搜索直到找到搜尋值或遍歷完數據為止"
   });
 });

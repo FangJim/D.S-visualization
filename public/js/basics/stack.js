@@ -102,17 +102,18 @@ function popObj() {
 }
 
 function offset(value) {
-    if (value > 999) {
+    let length = value.toString().length
+    if (length > 3) {
+        offsetValue = -30;
+    }
+    else if (length > 2) {
         offsetValue = -25;
     }
-    else if (value > 99) {
-        offsetValue = -20;
-    }
-    else if (value > 9) {
-        offsetValue = -15;
+    else if (length > 1) {
+        offsetValue = -18;
     }
     else {
-        offsetValue = 0;
+        offsetValue = -10;
     }
 }
 
@@ -184,7 +185,6 @@ popGo.addEventListener('click', function () {
 
     if (stack.size() === 0) {
         Swal.fire({
-            icon: 'error',
             title: 'Stack is empty'
         })
         pushGo.disabled = false;

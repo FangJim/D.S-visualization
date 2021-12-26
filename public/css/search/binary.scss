@@ -7,30 +7,33 @@ body {
     background-color: map_get($background, color);
     background-image: map_get($background, image);
 }
-.container{
+.container {
     @include flexCenter(column);
 }
-.sort{
+.sort {
     margin-right: 50px;
 }
-.find{
-    color: #fff ;
+.find {
+    color: #fff;
     font-size: 30px;
 }
-.steps{
+.steps {
     margin-top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-self: center;
 }
-.steps{
-    color: #fff ;
+.steps {
+    color: #fff;
     font-size: 20px;
 }
-.group{
+.group {
     flex-direction: column;
 }
-.leftright{
+.leftright {
     flex-direction: row;
+}
+.swal2-popup {
+    width: 60rem;
 }

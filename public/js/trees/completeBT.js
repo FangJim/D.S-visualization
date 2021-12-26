@@ -222,10 +222,11 @@ function drawData() {
 
 //font offset
 function offset(value) {
-    if (value > 99) {
-        fontOffset = -24;
+    let length = value.toString().length
+    if (length > 2) {
+        fontOffset = -23;
     }
-    else if (value > 9) {
+    else if (length > 1) {
         fontOffset = -15;
     }
     else {

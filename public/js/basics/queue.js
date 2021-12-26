@@ -101,17 +101,18 @@ function enqueueObj() {
 }
 
 function offset(value) {
-    if (value > 999) {
-        offsetValue = -30;
+    let length = value.toString().length
+    if (length > 3) {
+        offsetValue = -32;
     }
-    else if (value > 99) {
+    else if (length > 2) {
         offsetValue = -25;
     }
-    else if (value > 9) {
-        offsetValue = -15;
+    else if (length > 1) {
+        offsetValue = -17;
     }
     else {
-        offsetValue = -5;
+        offsetValue = -7;
     }
 }
 

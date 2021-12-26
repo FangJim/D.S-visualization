@@ -135,13 +135,14 @@ function drawLinkedList() {
 }
 
 function offset(content) {
-    if (content > 999) {
+    let length = content.toString().length
+    if (length > 3) {
         offsetValue = 10;
     }
-    else if (content > 99) {
+    else if (length > 2) {
         offsetValue = 5;
     }
-    else if (content > 9) {
+    else if (length > 1) {
         offsetValue = 0;
     }
     else {
@@ -342,7 +343,7 @@ searchGo.addEventListener('click', function () {
             clearInterval(timer);
             if (searchValue.value == linkedList_contents[0]) {
                 Swal.fire({
-                    title: `Found element ${searchValue.value} in index 0,${ans}`,
+                    title: `Found element "${searchValue.value}" in index 0,${ans}`,
                 })
             }
             else if (ans.length === 0) {
