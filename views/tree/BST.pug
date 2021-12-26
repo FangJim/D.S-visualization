@@ -10,20 +10,23 @@ block container
                     div.circular
                     i.fas.fa-info-circle.tips
                     div.methods
-                        div.traversal.method
-                            button.btn.btn-outline-danger.go.traversal.Preorder(type='button') Preorder
-                            button.btn.btn-outline-danger.go.traversal.Inorder(type='button') Inorder
-                            button.btn.btn-outline-danger.go.traversal.Postorder(type='button') Postorder
-                    canvas#canvas.BST.col-md-12(width="1000" height= "400")
+                        div.traversal
+                            button.btn.btn-outline-danger.go.traversal.preOrder(type='button') Preorder
+                            button.btn.btn-outline-danger.go.traversal.inOrder(type='button') Inorder
+                            button.btn.btn-outline-danger.go.traversal.postOrder(type='button') Postorder
+                    canvas#canvas.BST.col-md-12(width="1200" height= "450")
                     div.methods
                         div.insert.method
                             span Insert
-                            input.input.insert.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
+                            input.input.insertValue(type="text" placeholder='value')
+                            button.btn.btn-success.insertGo(type='button') Go
                         div.delete.method
                             span Delete
-                            input.input.delete.value(type="text" placeholder='value')
-                            button.btn.btn-success.go(type='button') Go
-
+                            input.input.deleteValue(type="text" placeholder='index')
+                            button.btn.btn-success.deleteGo(type='button') Go
+                        div.search.method
+                            span Search
+                            input.input.searchValue(type="text" placeholder='value')
+                            button.btn.btn-success.searchGo(type='button') Go
 block javascript 
     script(src='/js/trees/BST.js')

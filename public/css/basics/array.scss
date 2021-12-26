@@ -4,8 +4,7 @@
 @import '../modules/info';
 
 body {
-    background-color: map_get($background, color);
-    background-image: map_get($background, image);
+    @include background();
 }
 
 .array {

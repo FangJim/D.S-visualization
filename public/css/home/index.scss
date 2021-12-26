@@ -2,8 +2,9 @@
 @import '../modules/functions.scss';
 
 body {
-    background-color: map_get($background, color);
-    background-image: map_get($background, image);
+    // background-color: map_get($background, color);
+    // background-image: map_get($background, image);
+    @include background();
 }
 
 #intro {
