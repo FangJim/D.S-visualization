@@ -1,5 +1,5 @@
 //node structure
-class Node {
+class NodeStructure {
     constructor(item) {
         this.item = item;
         this.next = null;
@@ -14,7 +14,7 @@ class LinkedList {
     }
 
     append(element) {
-        let node = new Node(element);
+        let node = new NodeStructure(element);
         if (!this.head) {//head===null
             this.head = node;
         } else {
@@ -29,7 +29,7 @@ class LinkedList {
 
     insert(position, element) {
         if (position > -1 && position < this.length) {
-            let node = new Node(element);
+            let node = new NodeStructure(element);
             let current = this.head;
             let previous;
             let index = 0;
@@ -207,7 +207,7 @@ function drawSearchCircle() {
     if (searchAnime) {
         ctx.beginPath();
         ctx.arc((search_index % 10) * 100 + 30, searchY, 30, 0, Math.PI * 2);
-        //because setInterval will run immediately and it'll caused to not search for the first one 
+        //because setInterval will run immediately and it'll caused to not search for the first one
         if (isFind || searchValue.value === linkedList_contents[judge]) {
             ctx.strokeStyle = 'rgb(0,255, 0)';
         } else {

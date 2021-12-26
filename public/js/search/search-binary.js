@@ -117,7 +117,7 @@ searchGo.addEventListener("click", () => {
     let change;
     if (l > u) {
       clearInterval(intervalID);
-      finds.innerHTML = "Sorry,the value didn't find!!";
+      finds.innerHTML = "Sorry, the value couldn't be found";
       searchGo.disabled = false;
     } else {
       if (SortArray[m] == searchValue.value) {
@@ -161,9 +161,9 @@ tip.addEventListener("click", () => {
       "設定begin = 0<br>" +
       "以及end = 資料的長度<br><br>" +
 
-      "1.算出中間的位置(middle)<br>middle=(begin+ end)/2<br><br>" +
-      "2.若middle位置的數值小於搜尋值，代表middle左邊的值都小於我，所以往右邊尋找，故begin = middle+1<br><br>" +
-      "3.若middle位置的數值大於搜尋值，代表middle右邊的值都大於我，所以往左邊尋找，故end = middle-1<br><br>" +
+      "1.算出中位數(Midian)<br> Midian=(begin+ end)/2<br><br>" +
+      "2.若Midian的value小於搜尋值，代表Midian左邊的值都小於我，所以往右邊尋找，故begin = Midian+1<br><br>" +
+      "3.若Midian的value大於搜尋值，代表Midian右邊的值都大於我，所以往左邊尋找，故end = Midian-1<br><br>" +
       "重複以上動作直到找到搜尋值或begin >= end(未找到)",
   });
 });
