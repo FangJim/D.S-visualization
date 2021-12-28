@@ -275,7 +275,7 @@ preOrder.addEventListener('click', () => {
         if (traversalIndex === completeBT_data.length) {
             //show traversal ans
             Swal.fire({
-                title: `PreOrder output`,
+                title: `Preorder output`,
                 html: `${traversalOutput}`
             })
             traversalOutput = []//init
@@ -309,7 +309,7 @@ inOrder.addEventListener('click', () => {
         if (traversalIndex === completeBT_data.length) {
             //show traversal ans
             Swal.fire({
-                title: `InOrder output`,
+                title: `Inorder output`,
                 html: `${traversalOutput}`
             })
             traversalOutput = []//init
@@ -342,7 +342,7 @@ postOrder.addEventListener('click', () => {
         if (traversalIndex === completeBT_data.length) {
             //show traversal ans
             Swal.fire({
-                title: `PostOrder output`,
+                title: `Postorder output`,
                 html: `${traversalOutput}`
             })
             traversalOutput = []//init
@@ -437,6 +437,7 @@ insertGo.addEventListener('click', () => {
             title: 'Out of range',
             html: 'Sorry,為了視覺化的呈現我們設定樹的節點上限設為31,但在程式中只要記憶體空間足夠您就可以繼續insert'
         })
+        return;
     }
     if (insertValue.value == "") {
         Swal.fire({

@@ -1,17 +1,28 @@
-class Node {
+class NodeInfo {
+    constructor(index, level, x, y, value) {
+        this.index = index;
+        this.level = level;
+        this.x = x;
+        this.y = y;
+        this.value = value;
+    }
+}
+
+class NodeStructure {
     constructor(data) {
         this.data = data;
         this.left = null;
         this.right = null;
     }
 };
+
 class BinarySearchTree {
     constructor() {
         this.root = null;
         this.arr = [];
     }
     insertNode(data) {
-        let newNode = new Node(data);
+        let newNode = new NodeStructure(data);
         if (this.root === null) this.root = newNode;
         else this.insert(this.root, newNode);
     }
@@ -52,9 +63,198 @@ class BinarySearchTree {
     }
 }
 
+//variables
+const nodePosition_X = [800, 390, 1210, 190, 590, 1010, 1410, 90, 290, 490, 690, 910, 1110, 1310, 1510, 40, 140, 240, 340, 440, 540, 640, 740, 860, 960, 1060, 1160, 1260, 1360, 1460, 1560]
+const nodePosition_Y = [50, 140, 230, 320, 410]
+let temp = 0
+let alpha = 0;
+let isBucketEmpty = true
+let isRoot = true
+let goToRight = false
+let fontOffset = 0
+let node_Or_line = true
+let theLastNode = 0;
+let insert_anime = false;
+let insert_anime_end = false;
+let animeTimerCount = 0;
+//for setting node's index, level, x, y, data
+let nodeBucket = new Array(31).fill(null);
 
-//for setting node's x,y,data
-let nodeData = [];
+//canvas
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+update();
+
+function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawTree();
+
+    drawInsertAnime()
+
+    requestAnimationFrame(update);
+}
+
+function sign() {
+    ctx.font = '75px Arial';
+    ctx.fillText(`大於`, 1300, 70);
+    ctx.fillText(`小於`, 200, 70);
+}
+
+function drawTree() {
+    alpha += 0.01
+    ctx.lineWidth = 4;
+    if (!isBucketEmpty) {
+        for (let i = 0; i < nodeBucket.length; i++) {
+            if (nodeBucket[i] === null) {
+                continue;
+            }
+
+            if (i === theLastNode) {
+                ctx.strokeStyle = `rgba(255,0,0,${alpha})`;
+                ctx.fillStyle = `rgba(255,0,0,${alpha})`;
+            } else {
+                ctx.strokeStyle = `rgba(255,255,255)`;
+                ctx.fillStyle = `rgba(255,255,255)`;
+            }
+
+            //draw node
+            drawNode(nodeBucket[i].x, nodeBucket[i].y)
+
+            //draw line
+            drawLine(nodePosition_X[Math.floor((i - 1) / 2)], nodePosition_Y[nodeBucket[i].level - 1] + 30, nodePosition_X[i], nodePosition_Y[nodeBucket[i].level] - 30)
+
+            //draw data
+            drawData(nodeBucket[i].value, nodePosition_X[i], nodePosition_Y[nodeBucket[i].level], i)
+        }
+    }
+}
+function drawNode(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 30, 0, Math.PI * 2);
+    ctx.stroke();
+}
+
+function drawLine(beginX, beginY, endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(beginX, beginY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
+function drawData(data, x, y, index) {
+    ctx.font = '25px Arial';
+    offset(data)
+    ctx.fillText(`${data}`, x + fontOffset, y + 9);
+    ctx.font = '20px Arial';
+    ctx.fillText(`${index}`, x + 35, y - 15);
+    ctx.fill();
+}
+//font offset
+function offset(value) {
+    let length = value.toString().length
+    if (length > 2) {
+        fontOffset = -20;
+    }
+    else if (length > 1) {
+        fontOffset = -13;
+    }
+    else {
+        fontOffset = -7;
+    }
+}
+
+//eventListener
+const insertValue = document.querySelector('.insertValue');
+const insertGo = document.querySelector('.insertGo');
+const deleteIndex = document.querySelector('.deleteIndex');
+const deleteGo = document.querySelector('.deleteGo');
+const searchValue = document.querySelector('.searchValue');
+const searchGo = document.querySelector('.searchGo');
+
+
+insertGo.addEventListener('click', () => {
+    alpha = 0
+    if (insertValue.value == "") {
+        return
+    }
+    animeTimerCount = 0;
+
+    let index = 0
+    let level = 0
+    temp = parseInt(insertValue.value);
+
+    //已有根節點
+    if (!isBucketEmpty) {
+        isRoot = false
+
+        insert_anime = true
+        timer();
+
+        while (nodeBucket[index] != null) {//遇到空格前
+            if (temp < nodeBucket[index].value) {//左子點
+                index = index * 2 + 1
+                level++
+                goToRight = false
+            }
+            else {//右子點
+                index = index * 2 + 2
+                level++
+                goToRight = true
+            }
+        }
+    }
+
+    //index level x y value
+    let node = new NodeInfo(index, level, nodePosition_X[index], nodePosition_Y[level], temp)
+    nodeBucket[index] = node
+    theLastNode = index;
+
+    isBucketEmpty = false
+    insertValue.value = ""
+})
+
+function drawInsertAnime() {
+    if (insert_anime) {
+        ctx.beginPath();
+
+        if (node_Or_line) {//draw node
+            ctx.fillStyle = 'rgba(255,0,0,0.5)'
+            ctx.arc(nodeBucket[animeTimerCount].x, nodeBucket[animeTimerCount].y, 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        else {//draw line
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(255,0,0,1)'
+            ctx.moveTo(nodePosition_X[Math.floor((animeTimerCount - 1) / 2)], nodePosition_Y[nodeBucket[animeTimerCount].level - 1] + 30);
+            ctx.lineTo(nodePosition_X[animeTimerCount], nodePosition_Y[nodeBucket[animeTimerCount].level] - 30);
+            ctx.stroke();
+        }
+    }
+}
+
+function timer() {
+    let animeTimer = setInterval(() => {
+        if (node_Or_line) {
+            node_Or_line = false
+            if (temp < nodeBucket[animeTimerCount].value) {
+                animeTimerCount = animeTimerCount * 2 + 1
+            }
+            else {
+                animeTimerCount = animeTimerCount * 2 + 2
+            }
+            console.log(animeTimerCount)
+        } else {
+            node_Or_line = true
+        }
+
+        if (nodeBucket[animeTimerCount] === null) {
+            console.log('------------')
+            clearInterval(animeTimer)
+            insert_anime = false
+        }
+    }, 1000)
+}
+
 
 //tips
 const tip = document.querySelector('.tips');

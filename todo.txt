@@ -1,4 +1,4 @@
-各頁Tips
-BST
-LinkList + search
-Stage
+BST 
+比對過程
+delete
+search
