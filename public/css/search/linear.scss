@@ -4,16 +4,15 @@
 @import '../modules/info';
 
 body {
-    background-color: map_get($background, color);
-    background-image: map_get($background, image);
+    @include background();
 }
-.container{
+.container {
     @include flexCenter(column);
 }
-.index{
+.index {
     margin-bottom: 50px;
 }
-.find{
+.find {
     font-size: 30px;
     color: #fff;
 }

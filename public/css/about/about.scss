@@ -3,8 +3,7 @@
 @import '../modules/inputStyle.scss';
 
 body {
-    background-color: map_get($background, color);
-    background-image: map_get($background, image);
+    @include background();
 }
 
 .container {
