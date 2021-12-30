@@ -32,6 +32,7 @@ let lChild_color = 'white'
 let rChild_color = 'white'
 let traversalArr = []
 let traversalIndex = 0
+let ans = ""
 //canvas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -254,84 +255,41 @@ const inOrder = document.querySelector('.inOrder');
 const postOrder = document.querySelector('.postOrder');
 
 preOrder.addEventListener('click', () => {
-    if (completeBT_data.length === 0) {
-        return
-    }
-    traversalIndex = 0
-    changeWhite = true
-    preOrder_anime = true
-    inOrder_anime = false
-    postOrder_anime = false
-
-    //hide btn
-    isBtnShow(true)
-
-    //make preOrder array
-    preOrder_traversal(0);
-
-    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
-    let timer = setInterval(() => {
-        traversalIndex++
-        if (traversalIndex === completeBT_data.length) {
-            //show traversal ans
-            Swal.fire({
-                title: `Preorder output`,
-                html: `${traversalOutput}`
-            })
-            traversalOutput = []//init
-            traversalArr = []//init
-            isBtnShow(false)//show btn
-            clearInterval(timer)
-        }
-    }, 1000);
+    orderEvent('preOrder', true, false, false)
 })
 
 inOrder.addEventListener('click', () => {
-    if (completeBT_data.length === 0) {
-        return
-    }
-    traversalIndex = 0
-    changeWhite = true
-
-    preOrder_anime = false
-    inOrder_anime = true
-    postOrder_anime = false
-
-    //make preOrder array
-    inOrder_traversal(0);
-
-    //hide btn
-    isBtnShow(true)
-
-    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
-    let timer = setInterval(() => {
-        traversalIndex++
-        if (traversalIndex === completeBT_data.length) {
-            //show traversal ans
-            Swal.fire({
-                title: `Inorder output`,
-                html: `${traversalOutput}`
-            })
-            traversalOutput = []//init
-            traversalArr = []//init
-            isBtnShow(false)//show btn
-            clearInterval(timer)
-        }
-    }, 1000);
+    orderEvent('inOrder', false, true, false);
 })
 
 postOrder.addEventListener('click', () => {
+    orderEvent('postOrder', false, false, true);
+})
+
+function orderEvent(whichOrder, preO, inO, postO) {
     if (completeBT_data.length === 0) {
-        return
+        return;
     }
+
     traversalIndex = 0
     changeWhite = true
-    preOrder_anime = false
-    inOrder_anime = false
-    postOrder_anime = true
+    preOrder_anime = preO
+    inOrder_anime = inO
+    postOrder_anime = postO
 
-    //make preOrder array
-    postOrder_traversal(0);
+    switch (whichOrder) {
+        case 'preOrder':
+            preOrder_traversal(0);
+            break;
+        case 'inOrder':
+            inOrder_traversal(0);
+            break;
+        case 'postOrder':
+            postOrder_traversal(0);
+            break;
+        default:
+            break;
+    }
 
     //hide btn
     isBtnShow(true);
@@ -342,8 +300,8 @@ postOrder.addEventListener('click', () => {
         if (traversalIndex === completeBT_data.length) {
             //show traversal ans
             Swal.fire({
-                title: `Postorder output`,
-                html: `${traversalOutput}`
+                title: `${whichOrder} output`,
+                html: `${traversalOutput.join('->')}`
             })
             traversalOutput = []//init
             traversalArr = []//init
@@ -351,19 +309,9 @@ postOrder.addEventListener('click', () => {
             clearInterval(timer)
         }
     }, 1000);
-})
+}
 
-//       3
-//     /   \
-//    4     5 
-//   / \   / \
-//  8  7   4  2
-//index:  0 1 2 3 4 5 6
-// data: [3,4,5,8,7,4,2]
-//preOrder: 3 -> 4 -> 8 -> 7 -> 5 -> 4 -> 2
-//inOrder:  8 -> 4 -> 7 -> 3 -> 4 -> 5 -> 2
-//postOrder:8 -> 7 -> 4 -> 4 -> 2 -> 5 -> 3
-
+//traversal function
 function preOrder_traversal(index) {
     if (index < middle.length && preOrder_anime) {
         //for traversal path
@@ -422,7 +370,6 @@ function isBtnShow(bool) {
         postOrder.disabled = false
     }
 }
-
 //methods
 const insertValue = document.querySelector('.insertValue');
 const insertGo = document.querySelector('.insertGo');
@@ -471,8 +418,10 @@ deleteGo.addEventListener('click', () => {
         })
         return
     }
-    completeBT_data.splice(deleteIndex.value, 1)
-    middle.splice(deleteIndex.value, 1)
+
+    const equalNumber = (element) => element == deleteIndex.value;
+    completeBT_data.splice(completeBT_data.findIndex(equalNumber), 1)
+    middle.splice(middle.findIndex(equalNumber), 1)
     deleteIndex.value = ""
 })
 

@@ -75,8 +75,6 @@ let fontOffset = 0
 let theLastNode = 0;
 
 let insert_anime = false;
-let insert_anime_end = false;
-let animeTimerCount = 0;
 
 let preOrder_anime = false
 let inOrder_anime = false
@@ -86,6 +84,8 @@ let traversalOutput = []
 let traversalIndex = 0;
 let changeWhite = false;
 
+let searchStart = false;
+let searchIndex = 0;
 //for setting node's index, level, x, y, data
 let nodeBucket = new Array(31).fill(null);
 
@@ -101,17 +101,13 @@ function update() {
 
     OrderAnime();
 
+    searchAnime();
+
     requestAnimationFrame(update);
 }
 
-function sign() {
-    ctx.font = '75px Arial';
-    ctx.fillText(`大於`, 1300, 70);
-    ctx.fillText(`小於`, 200, 70);
-}
-
 function drawTree() {
-    alpha += 0.01
+    alpha += 0.05
     ctx.lineWidth = 4;
     if (!isBucketEmpty) {
         for (let i = 0; i < nodeBucket.length; i++) {
@@ -174,11 +170,21 @@ function offset(value) {
     }
 }
 
+function searchAnime() {
+    if (nodeBucket[searchIndex] == null) {
+        return;
+    }
+    if (searchStart) {
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(255,0,0,0.5)';
+        ctx.arc(nodePosition_X[searchIndex], nodePosition_Y[nodeBucket[searchIndex].level], 30, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
 //eventListener
 const insertValue = document.querySelector('.insertValue');
 const insertGo = document.querySelector('.insertGo');
-const deleteIndex = document.querySelector('.deleteIndex');
-const deleteGo = document.querySelector('.deleteGo');
 const searchValue = document.querySelector('.searchValue');
 const searchGo = document.querySelector('.searchGo');
 
@@ -189,7 +195,6 @@ insertGo.addEventListener('click', () => {
     if (insertValue.value == "") {
         return
     }
-    animeTimerCount = 0;
 
     let index = 0
     let level = 0
@@ -212,6 +217,14 @@ insertGo.addEventListener('click', () => {
                 level++
                 goToRight = true
             }
+            if (level == 5) {
+                Swal.fire({
+                    icon: 'info',
+                    title: `抱歉為了視覺化的效果,我們將高度控制在5,但若在程式中只要記憶體空間足夠您就可以繼續新增`,
+                })
+                insertValue.value = ""
+                return
+            }
         }
     }
 
@@ -224,28 +237,35 @@ insertGo.addEventListener('click', () => {
     insertValue.value = ""
 })
 
-
-//tips
-const tip = document.querySelector('.tips');
-tip.addEventListener('click', () => {
-    Swal.fire({
-        title: 'Tips',
-        html: "Binary Search Tree(二元搜尋樹),顧名思義就是他的搜索過程非常快,而二元搜尋樹必須滿足<br>" +
-            "1.若任意節點的左子樹不空，則左子樹上所有節點的值均小於它的根節點的值<br>" +
-            "2.若任意節點的右子樹不空，則右子樹上所有節點的值均大於它的根節點的值<br>" +
-            "3.任意節點的左、右子樹也分別為二元搜尋樹<br><br>" +
-            "Insert(value) //新增節點至樹中,由根節點開始比對,大於往右子樹,小於往左子樹,直到走到底則插入<br>" +
-            "Search(value) //找尋value,由根節點開始比對,大於往右子樹,小於往左子樹,等於則輸出該節點index值<br><br>" +
-            "<strong>樹的走訪</strong><br>" +
-            "從樹的根節點(Root)開始走訪,有的步驟是<br>" +
-            "A.輸出該點<br>" +
-            "B.前往左子樹(直到無左子點)<br>" +
-            "C.前往右子樹(直到無右子點)<br><br>" +
-            "走訪方式有以下三種<br>" +
-            "PreOrder : A->B->C 當前進到新的點就要從A步驟開始<br>" +
-            "InOrder : B->A->C 當前進到新的點就要從B步驟開始<br>" +
-            "PostOrder :B->C->A 當前進到新的點就要從B步驟開始<br>"
-    })
+searchGo.addEventListener('click', () => {
+    changeWhite = true
+    searchIndex = 0;
+    temp = parseInt(searchValue.value);
+    searchStart = true;
+    let timer = setInterval(() => {
+        if (nodeBucket[searchIndex] != null) {
+            if (temp > nodeBucket[searchIndex].value) {
+                searchIndex = searchIndex * 2 + 2
+            }
+            else if (temp < nodeBucket[searchIndex].value) {
+                searchIndex = searchIndex * 2 + 1
+            }
+            else {
+                Swal.fire({
+                    title: `Found element ${temp} in index ${searchIndex}`,
+                })
+                searchStart = false;
+                clearInterval(timer);
+            }
+        } else {
+            Swal.fire({
+                title: `Not found!`,
+            })
+            searchStart = false;
+            clearInterval(timer);
+        }
+    }, 800);
+    searchValue.value = "";
 })
 
 //traversal
@@ -254,20 +274,45 @@ const inOrder = document.querySelector('.inOrder');
 const postOrder = document.querySelector('.postOrder');
 
 preOrder.addEventListener('click', () => {
+    orderEvent('preOrder', true, false, false)
+})
+
+inOrder.addEventListener('click', () => {
+    orderEvent('inOrder', false, true, false)
+})
+
+postOrder.addEventListener('click', () => {
+    orderEvent('postOrder', false, false, true)
+})
+
+function orderEvent(whichOrder, preO, inO, postO) {
     if (nodeBucket.every(element => element === null)) {
         return;
     }
     traversalIndex = 0
     changeWhite = true
-    preOrder_anime = true
-    inOrder_anime = false
-    postOrder_anime = false
+    preOrder_anime = preO
+    inOrder_anime = inO
+    postOrder_anime = postO
 
     // hide btn
     isBtnShow(true)
 
     // make preOrder array
-    preOrder_traversal(0);
+    switch (whichOrder) {
+        case 'preOrder':
+            preOrder_traversal(0);
+            break;
+        case 'inOrder':
+            inOrder_traversal(0);
+            break;
+        case 'postOrder':
+            postOrder_traversal(0);
+            break;
+
+        default:
+            break;
+    }
 
     //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
     let timer = setInterval(() => {
@@ -275,8 +320,8 @@ preOrder.addEventListener('click', () => {
         if (traversalIndex === traversalArr.length) {
             //show traversal ans
             Swal.fire({
-                title: `Preorder output`,
-                html: `${traversalOutput}`
+                title: `${whichOrder} output`,
+                html: `${traversalOutput.join('->')}`
             })
 
             traversalOutput = []//init
@@ -284,8 +329,8 @@ preOrder.addEventListener('click', () => {
             isBtnShow(false)//show btn
             clearInterval(timer)
         }
-    }, 1000);
-})
+    }, 800);
+}
 
 function preOrder_traversal(index) {
     if (index < nodeBucket.length && preOrder_anime && nodeBucket[index] != null) {
@@ -298,40 +343,6 @@ function preOrder_traversal(index) {
     }
 }
 
-inOrder.addEventListener('click', () => {
-    if (nodeBucket.every(element => element === null)) {
-        return;
-    }
-    traversalIndex = 0
-    changeWhite = true
-    preOrder_anime = false
-    inOrder_anime = true
-    postOrder_anime = false
-
-    // hide btn
-    isBtnShow(true)
-
-    // make preOrder array
-    inOrder_traversal(0);
-
-    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
-    let timer = setInterval(() => {
-        traversalIndex++
-        if (traversalIndex === traversalArr.length) {
-            //show traversal ans
-            Swal.fire({
-                title: `Inorder output`,
-                html: `${traversalOutput}`
-            })
-
-            traversalOutput = []//init
-            traversalArr = []//init
-            isBtnShow(false)//show btn
-            clearInterval(timer)
-        }
-    }, 1000);
-})
-
 function inOrder_traversal(index) {
     if (index < nodeBucket.length && inOrder_anime && nodeBucket[index] != null) {
         inOrder_traversal(index * 2 + 1);
@@ -342,40 +353,6 @@ function inOrder_traversal(index) {
         inOrder_traversal(index * 2 + 2);
     }
 }
-
-postOrder.addEventListener('click', () => {
-    if (nodeBucket.every(element => element === null)) {
-        return;
-    }
-    traversalIndex = 0
-    changeWhite = true
-    preOrder_anime = false
-    inOrder_anime = false
-    postOrder_anime = true
-
-    // hide btn
-    isBtnShow(true)
-
-    // make preOrder array
-    postOrder_traversal(0);
-
-    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
-    let timer = setInterval(() => {
-        traversalIndex++
-        if (traversalIndex === traversalArr.length) {
-            //show traversal ans
-            Swal.fire({
-                title: `Postorder output`,
-                html: `${traversalOutput}`
-            })
-
-            traversalOutput = []//init
-            traversalArr = []//init
-            isBtnShow(false)//show btn
-            clearInterval(timer)
-        }
-    }, 1000);
-})
 
 function postOrder_traversal(index) {
     if (index < nodeBucket.length && postOrder_anime && nodeBucket[index] != null) {
@@ -415,3 +392,26 @@ function isBtnShow(bool) {
         postOrder.disabled = false
     }
 }
+
+//tips
+const tip = document.querySelector('.tips');
+tip.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Tips',
+        html: "Binary Search Tree(二元搜尋樹),顧名思義就是他的搜索過程非常快,而二元搜尋樹必須滿足<br>" +
+            "1.若任意節點的左子樹不空，則左子樹上所有節點的值均小於它的根節點的值<br>" +
+            "2.若任意節點的右子樹不空，則右子樹上所有節點的值均大於它的根節點的值<br>" +
+            "3.任意節點的左、右子樹也分別為二元搜尋樹<br><br>" +
+            "Insert(value) //新增節點至樹中,由根節點開始比對,大於往右子樹,小於往左子樹,直到走到底則插入<br>" +
+            "Search(value) //找尋value,由根節點開始比對,大於往右子樹,小於往左子樹,等於則輸出該節點index值<br><br>" +
+            "<strong>樹的走訪</strong><br>" +
+            "從樹的根節點(Root)開始走訪,有的步驟是<br>" +
+            "A.輸出該點<br>" +
+            "B.前往左子樹(直到無左子點)<br>" +
+            "C.前往右子樹(直到無右子點)<br><br>" +
+            "走訪方式有以下三種<br>" +
+            "PreOrder : A->B->C 當前進到新的點就要從A步驟開始<br>" +
+            "InOrder : B->A->C 當前進到新的點就要從B步驟開始<br>" +
+            "PostOrder :B->C->A 當前進到新的點就要從B步驟開始<br>"
+    })
+})
