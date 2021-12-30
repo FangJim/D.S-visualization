@@ -422,6 +422,7 @@ function isBtnShow(bool) {
         postOrder.disabled = false
     }
 }
+
 //methods
 const insertValue = document.querySelector('.insertValue');
 const insertGo = document.querySelector('.insertGo');
@@ -477,7 +478,6 @@ deleteGo.addEventListener('click', () => {
 
 
 //tips
-
 const tip = document.querySelector('.tips');
 tip.addEventListener('click', () => {
     Swal.fire({

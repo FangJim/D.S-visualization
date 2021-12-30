@@ -72,11 +72,20 @@ let isBucketEmpty = true
 let isRoot = true
 let goToRight = false
 let fontOffset = 0
-let node_Or_line = true
 let theLastNode = 0;
+
 let insert_anime = false;
 let insert_anime_end = false;
 let animeTimerCount = 0;
+
+let preOrder_anime = false
+let inOrder_anime = false
+let postOrder_anime = false
+let traversalArr = []
+let traversalOutput = []
+let traversalIndex = 0;
+let changeWhite = false;
+
 //for setting node's index, level, x, y, data
 let nodeBucket = new Array(31).fill(null);
 
@@ -90,7 +99,7 @@ function update() {
 
     drawTree();
 
-    drawInsertAnime()
+    OrderAnime();
 
     requestAnimationFrame(update);
 }
@@ -110,7 +119,7 @@ function drawTree() {
                 continue;
             }
 
-            if (i === theLastNode) {
+            if (i === theLastNode && !changeWhite) {
                 ctx.strokeStyle = `rgba(255,0,0,${alpha})`;
                 ctx.fillStyle = `rgba(255,0,0,${alpha})`;
             } else {
@@ -129,6 +138,7 @@ function drawTree() {
         }
     }
 }
+
 function drawNode(x, y) {
     ctx.beginPath();
     ctx.arc(x, y, 30, 0, Math.PI * 2);
@@ -141,6 +151,7 @@ function drawLine(beginX, beginY, endX, endY) {
     ctx.lineTo(endX, endY);
     ctx.stroke();
 }
+
 function drawData(data, x, y, index) {
     ctx.font = '25px Arial';
     offset(data)
@@ -173,6 +184,7 @@ const searchGo = document.querySelector('.searchGo');
 
 
 insertGo.addEventListener('click', () => {
+    changeWhite = false
     alpha = 0
     if (insertValue.value == "") {
         return
@@ -188,7 +200,6 @@ insertGo.addEventListener('click', () => {
         isRoot = false
 
         insert_anime = true
-        timer();
 
         while (nodeBucket[index] != null) {//遇到空格前
             if (temp < nodeBucket[index].value) {//左子點
@@ -213,48 +224,6 @@ insertGo.addEventListener('click', () => {
     insertValue.value = ""
 })
 
-function drawInsertAnime() {
-    if (insert_anime) {
-        ctx.beginPath();
-
-        if (node_Or_line) {//draw node
-            ctx.fillStyle = 'rgba(255,0,0,0.5)'
-            ctx.arc(nodeBucket[animeTimerCount].x, nodeBucket[animeTimerCount].y, 30, 0, Math.PI * 2);
-            ctx.fill();
-        }
-        else {//draw line
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(255,0,0,1)'
-            ctx.moveTo(nodePosition_X[Math.floor((animeTimerCount - 1) / 2)], nodePosition_Y[nodeBucket[animeTimerCount].level - 1] + 30);
-            ctx.lineTo(nodePosition_X[animeTimerCount], nodePosition_Y[nodeBucket[animeTimerCount].level] - 30);
-            ctx.stroke();
-        }
-    }
-}
-
-function timer() {
-    let animeTimer = setInterval(() => {
-        if (node_Or_line) {
-            node_Or_line = false
-            if (temp < nodeBucket[animeTimerCount].value) {
-                animeTimerCount = animeTimerCount * 2 + 1
-            }
-            else {
-                animeTimerCount = animeTimerCount * 2 + 2
-            }
-            console.log(animeTimerCount)
-        } else {
-            node_Or_line = true
-        }
-
-        if (nodeBucket[animeTimerCount] === null) {
-            console.log('------------')
-            clearInterval(animeTimer)
-            insert_anime = false
-        }
-    }, 1000)
-}
-
 
 //tips
 const tip = document.querySelector('.tips');
@@ -266,7 +235,6 @@ tip.addEventListener('click', () => {
             "2.若任意節點的右子樹不空，則右子樹上所有節點的值均大於它的根節點的值<br>" +
             "3.任意節點的左、右子樹也分別為二元搜尋樹<br><br>" +
             "Insert(value) //新增節點至樹中,由根節點開始比對,大於往右子樹,小於往左子樹,直到走到底則插入<br>" +
-            "Delete(index) //刪除樹中的index號節點,再將樹重新調整成BST<br>" +
             "Search(value) //找尋value,由根節點開始比對,大於往右子樹,小於往左子樹,等於則輸出該節點index值<br><br>" +
             "<strong>樹的走訪</strong><br>" +
             "從樹的根節點(Root)開始走訪,有的步驟是<br>" +
@@ -279,3 +247,171 @@ tip.addEventListener('click', () => {
             "PostOrder :B->C->A 當前進到新的點就要從B步驟開始<br>"
     })
 })
+
+//traversal
+const preOrder = document.querySelector('.preOrder');
+const inOrder = document.querySelector('.inOrder');
+const postOrder = document.querySelector('.postOrder');
+
+preOrder.addEventListener('click', () => {
+    if (nodeBucket.every(element => element === null)) {
+        return;
+    }
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = true
+    inOrder_anime = false
+    postOrder_anime = false
+
+    // hide btn
+    isBtnShow(true)
+
+    // make preOrder array
+    preOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === traversalArr.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `Preorder output`,
+                html: `${traversalOutput}`
+            })
+
+            traversalOutput = []//init
+            traversalArr = []//init
+            isBtnShow(false)//show btn
+            clearInterval(timer)
+        }
+    }, 1000);
+})
+
+function preOrder_traversal(index) {
+    if (index < nodeBucket.length && preOrder_anime && nodeBucket[index] != null) {
+        //for traversal path
+        traversalArr.push([nodePosition_X[index], nodePosition_Y[nodeBucket[index].level]]);
+        //for traversal output
+        traversalOutput.push(nodeBucket[index].value);
+        preOrder_traversal(index * 2 + 1);
+        preOrder_traversal(index * 2 + 2);
+    }
+}
+
+inOrder.addEventListener('click', () => {
+    if (nodeBucket.every(element => element === null)) {
+        return;
+    }
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = false
+    inOrder_anime = true
+    postOrder_anime = false
+
+    // hide btn
+    isBtnShow(true)
+
+    // make preOrder array
+    inOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === traversalArr.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `Inorder output`,
+                html: `${traversalOutput}`
+            })
+
+            traversalOutput = []//init
+            traversalArr = []//init
+            isBtnShow(false)//show btn
+            clearInterval(timer)
+        }
+    }, 1000);
+})
+
+function inOrder_traversal(index) {
+    if (index < nodeBucket.length && inOrder_anime && nodeBucket[index] != null) {
+        inOrder_traversal(index * 2 + 1);
+        //for traversal path
+        traversalArr.push([nodePosition_X[index], nodePosition_Y[nodeBucket[index].level]]);
+        //for traversal output
+        traversalOutput.push(nodeBucket[index].value);
+        inOrder_traversal(index * 2 + 2);
+    }
+}
+
+postOrder.addEventListener('click', () => {
+    if (nodeBucket.every(element => element === null)) {
+        return;
+    }
+    traversalIndex = 0
+    changeWhite = true
+    preOrder_anime = false
+    inOrder_anime = false
+    postOrder_anime = true
+
+    // hide btn
+    isBtnShow(true)
+
+    // make preOrder array
+    postOrder_traversal(0);
+
+    //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
+    let timer = setInterval(() => {
+        traversalIndex++
+        if (traversalIndex === traversalArr.length) {
+            //show traversal ans
+            Swal.fire({
+                title: `Postorder output`,
+                html: `${traversalOutput}`
+            })
+
+            traversalOutput = []//init
+            traversalArr = []//init
+            isBtnShow(false)//show btn
+            clearInterval(timer)
+        }
+    }, 1000);
+})
+
+function postOrder_traversal(index) {
+    if (index < nodeBucket.length && postOrder_anime && nodeBucket[index] != null) {
+        postOrder_traversal(index * 2 + 1);
+        postOrder_traversal(index * 2 + 2);
+        //for traversal path
+        traversalArr.push([nodePosition_X[index], nodePosition_Y[nodeBucket[index].level]]);
+        //for traversal output
+        traversalOutput.push(nodeBucket[index].value);
+    }
+}
+
+//keep drawing
+function OrderAnime() {
+    if (preOrder_anime || inOrder_anime || postOrder_anime) {
+        if (traversalIndex < traversalArr.length) {
+            ctx.fillStyle = 'rgba(255,0,0,0.5)';
+            ctx.beginPath();
+            ctx.arc(traversalArr[traversalIndex][0], traversalArr[traversalIndex][1], 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+}
+
+//hide & show btn
+function isBtnShow(bool) {
+    if (bool) {
+        //hide btn
+        preOrder.disabled = true
+        inOrder.disabled = true
+        postOrder.disabled = true
+    }
+    else {
+        //hide btn
+        preOrder.disabled = false
+        inOrder.disabled = false
+        postOrder.disabled = false
+    }
+}
