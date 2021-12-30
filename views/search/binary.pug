@@ -10,21 +10,22 @@ block container
         i.fas.fa-info-circle.tips
         div.group
             div.steps
-                p.step1 step1  Sort
+                p.step1 First, you need to sort
                 div.insert.method 
-                    p step2  caculate the &nbsp;
-                    p.middle middle's &nbsp;
-                    p value 
+                    p The searching value(
+                    p.searchValueshow    
+                    p ) is &nbsp;
+                    p.smallbig  
+                    p &nbsp;than median's value &nbsp;  
                 div.insert.method 
-                    p The search value is on the &nbsp;
-                    p.left left &nbsp;
-                    p or &nbsp;
-                    p.right right 
+                    p.left Go to left side &nbsp;
+                    p.right Go to right side 
         .show
         .index
         div.methods
             div.insert.method 
-                button.btn.btn-success.sort(type='button') Sort
+                span Sort
+                button.btn.btn-success.sort(type='button') Go
                 span Search
                 input.input.searchValue(type="text" placeholder='value' maxlength="4")
                 button.btn.btn-success.searchGo(type='button') Go

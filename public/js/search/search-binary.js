@@ -1,12 +1,10 @@
-const fromValue = document.querySelector(".fromValue");
-const toValue = document.querySelector(".toValue");
-const indexValue = document.querySelector(".indexValue");
 const searchValue = document.querySelector(".searchValue");
 const searchGo = document.querySelector(".searchGo");
 const sort = document.querySelector(".sort");
 const finds = document.querySelector(".find");
 const step1 = document.querySelector(".step1");
-const middle = document.querySelector(".middle");
+const searchValueshow = document.querySelector(".searchValueshow");
+const smallbig = document.querySelector(".smallbig");
 const left = document.querySelector(".left");
 const right = document.querySelector(".right");
 const tip = document.querySelector(".tips");
@@ -104,6 +102,7 @@ sort.addEventListener("click", () => {
 });
 
 searchGo.addEventListener("click", () => {
+  searchValueshow.innerHTML = searchValue.value;
   step1.style.color = "white";
   searchGo.disabled = true;
   let l = 0;
@@ -117,7 +116,7 @@ searchGo.addEventListener("click", () => {
     let change;
     if (l > u) {
       clearInterval(intervalID);
-      finds.innerHTML = "Sorry, the value couldn't be found";
+      finds.innerHTML = "Sorry,the value didn't find!!";
       searchGo.disabled = false;
     } else {
       if (SortArray[m] == searchValue.value) {
@@ -127,30 +126,28 @@ searchGo.addEventListener("click", () => {
         change = 2;
       } else if (SortArray[m] > searchValue.value) {
         rects[m].style.fill = "red";
+        smallbig.innerHTML = "smaller";
+        smallbig.style.color = "red";
         change = 1;
         u = m - 1;
       } else if (SortArray[m] < searchValue.value) {
         rects[m].style.fill = "red";
+        smallbig.innerHTML = "bigger";
+        smallbig.style.color = "red";
         change = 0;
         l = m + 1;
       }
-      middle.style.color = "red";
       left.style.color = "white";
       right.style.color = "white";
-      left.style.fontSize = 20 + "px";
-      right.style.fontSize = 20 + "px";
     }
     setTimeout(() => {
-      middle.style.color = "white";
       if (change === 1) {
         left.style.color = "red";
-        left.style.fontSize = 50 + "px";
       } else if (change === 0) {
         right.style.color = "red";
-        right.style.fontSize = 50 + "px";
       }
-    }, 2000);
-  }, 4000);
+    }, 1000);
+  }, 3000);
 });
 
 tip.addEventListener("click", () => {
@@ -160,10 +157,9 @@ tip.addEventListener("click", () => {
       "Binary search 是針對已“排序好”的資料進行搜尋<br><br>" +
       "設定begin = 0<br>" +
       "以及end = 資料的長度<br><br>" +
-
-      "1.算出中位數(Midian)<br> Midian=(begin+ end)/2<br><br>" +
-      "2.若Midian的value小於搜尋值，代表Midian左邊的值都小於我，所以往右邊尋找，故begin = Midian+1<br><br>" +
-      "3.若Midian的value大於搜尋值，代表Midian右邊的值都大於我，所以往左邊尋找，故end = Midian-1<br><br>" +
+      "1.算出中間的位置(middle)<br>middle=(begin+ end)/2<br><br>" +
+      "2.若middle位置的數值小於搜尋值，代表middle左邊的值都小於我，所以往右邊尋找，故begin = middle+1<br><br>" +
+      "3.若middle位置的數值大於搜尋值，代表middle右邊的值都大於我，所以往左邊尋找，故end = middle-1<br><br>" +
       "重複以上動作直到找到搜尋值或begin >= end(未找到)",
   });
 });

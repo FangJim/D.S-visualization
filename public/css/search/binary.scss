@@ -4,13 +4,11 @@
 @import '../modules/info';
 
 body {
-    @include background();
+    background-color: map_get($background, color);
+    background-image: map_get($background, image);
 }
 .container {
     @include flexCenter(column);
-}
-.sort {
-    margin-right: 50px;
 }
 .find {
     color: #fff;
