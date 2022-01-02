@@ -418,10 +418,8 @@ deleteGo.addEventListener('click', () => {
         })
         return
     }
-
-    const equalNumber = (element) => element == deleteIndex.value;
-    completeBT_data.splice(completeBT_data.findIndex(equalNumber), 1)
-    middle.splice(middle.findIndex(equalNumber), 1)
+    completeBT_data.splice(deleteIndex.value, 1)
+    middle.splice(deleteIndex.value, 1)
     deleteIndex.value = ""
 })
 

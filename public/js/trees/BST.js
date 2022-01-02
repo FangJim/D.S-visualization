@@ -316,12 +316,19 @@ function orderEvent(whichOrder, preO, inO, postO) {
 
     //one second plus one if index comes to completeBT_data.length means we traversal to the last node  
     let timer = setInterval(() => {
+        let str = ""
         traversalIndex++
         if (traversalIndex === traversalArr.length) {
             //show traversal ans
+            if (whichOrder === 'inOrder') {
+                str = "Did you find out that the result output with inorder in BST will change to the sorted result"
+            }
+            else {
+                str = "";
+            }
             Swal.fire({
                 title: `${whichOrder} output`,
-                html: `${traversalOutput.join('->')}`
+                html: `${traversalOutput.join('->')}<br><br>${str}`
             })
 
             traversalOutput = []//init
