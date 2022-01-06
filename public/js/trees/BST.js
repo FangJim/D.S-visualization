@@ -192,7 +192,11 @@ const searchGo = document.querySelector('.searchGo');
 insertGo.addEventListener('click', () => {
     changeWhite = false
     alpha = 0
-    if (insertValue.value == "") {
+    if (insertValue.value == "" || isNaN(insertValue.value)) {
+        Swal.fire({
+            icon: 'error',
+            title: `Please enter the Number`,
+        })
         return
     }
 
