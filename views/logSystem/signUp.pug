@@ -8,7 +8,7 @@ block container
             header  SignUp
             form(action="signUp" method="post")
                 if message === "5" 
-                    div.field.name.shake.error
+                    div.field.name
                         div.input-area 
                             input.input.nInput(type="text" placeholder="name" maxlength="10" name="name"  required)
                             i.icon.fas.fa-user
@@ -16,11 +16,11 @@ block container
                         div.error.error-txt User with the provided name already exists!
                     div.field.email.shake.error
                         div.input-area 
-                            input.input.pInput(type="text" placeholder="email" maxlength="10" name="email" required)
+                            input.input.pInput(type="text" placeholder="email" name="email" required)
                             i.icon.fas.fa-envelope
                             i.error.error-icon.fas.fa-exclamation-circle
                         div.error.error-txt User with the provided email already exists!
-                    div.field.password.shake.error
+                    div.field.password
                         div.input-area 
                             input.input.pInput(type="text" placeholder="password" maxlength="10" name="password" required)
                             i.icon.fas.fa-lock
@@ -35,7 +35,7 @@ block container
                         div.error.error-txt Name can't be blank!
                     div.field.email
                         div.input-area 
-                            input.input.eInput(type="text" placeholder="email" maxlength="10" name="email" required)
+                            input.input.eInput(type="text" placeholder="email"  name="email" required)
                             i.icon.fas.fa-envelope
                             i.error.error-icon.fas.fa-exclamation-circle
                         div.error.error-txt Name can't be blank!
