@@ -1,7 +1,7 @@
-@import '../modules/variables';
-@import '../modules/functions';
-@import '../modules/info';
-
+@import '../modules/variables.scss';
+@import '../modules/functions.scss';
+@import '../modules/inputStyle.scss';
+@import '../modules/info.scss';
 body {
     @include background();
 }
