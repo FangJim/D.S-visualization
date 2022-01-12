@@ -1,3 +1,7 @@
+html {
+    scrollbar-width: none;
+}
+
 .container {
     height: 90vh;
     @include flexCenter(row);
