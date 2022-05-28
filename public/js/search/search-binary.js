@@ -16,13 +16,14 @@ let m = 0;
 let SortArray = [];
 searchGo.disabled = true;
 
-function Draw() {
+function draw() {
   d3.selectAll("svg").remove();
-  var svg = d3
+  let svg = d3
     .select(".show")
     .append("svg")
     .attr("width", svg_width)
     .attr("height", svg_height);
+
   svg
     .selectAll("rect")
     .data(SortArray)
@@ -56,11 +57,13 @@ function Draw() {
     .attr("y", (d) => {
       return svg_height - d * 4 - 3;
     });
-  var svgindex = d3
+
+  let svgindex = d3
     .select(".index")
     .append("svg")
     .attr("width", svgindex_width)
     .attr("height", svgindex_height);
+
   svgindex
     .selectAll("text")
     .data(indexArray)
@@ -79,12 +82,9 @@ function Draw() {
     });
 }
 
-async function Catch() {
-  //console.log("Start");
-  await Draw();
+function sorting() {
+  draw();
   rects = document.querySelectorAll("rect");
-  //console.log(rects);
-  //console.log("Finish waiting");
 }
 
 sort.addEventListener("click", () => {
@@ -98,7 +98,7 @@ sort.addEventListener("click", () => {
     SortArray.push(rect.height.animVal.value / 4);
   });
   SortArray.sort();
-  Catch();
+  sorting();
 });
 
 searchGo.addEventListener("click", () => {

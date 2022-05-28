@@ -30,8 +30,6 @@ html
                                 a.dropdown-item(href='/basics/stack') Stack
                                 li
                                 a.dropdown-item(href='/basics/queue') Queue
-                                li
-                                a.dropdown-item(href='/exam/basicsExam') Basics Exam
 
                         li.nav-item.dropdown
                             a.nav-link.dropdown-toggle#navbarDropdown(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false').
@@ -43,8 +41,6 @@ html
                                 a.dropdown-item(href='/tree/completeBT') Complete Binary Tree
                                 li
                                 a.dropdown-item(href='/tree/BST') BST
-                                li
-                                a.dropdown-item(href='/exam/treeExam') Tree Exam
 
 
                         li.nav-item.dropdown
@@ -57,31 +53,29 @@ html
                                 a.dropdown-item(href='/search/Linear') Linear search
                                 li
                                 a.dropdown-item(href='/search/binary') Binary search
-                                li
-                                a.dropdown-item(href='/exam/searchExam') Search Exam
 
                         li.nav-item
                             a.nav-link(href='/about/about' role='button' aria-expanded='false').
 
                                 About
-                    form.d-flex
-                        li.nav-item.dropdown.userDropdown
-                            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false').
-                                <img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png"/>
+                    //- form.d-flex
+                    //-     li.nav-item.dropdown.userDropdown
+                    //-         a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false').
+                    //-             <img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png"/>
 
-                            ul.dropdown-menu(aria-labelledby='navbarDropdown')
-                                if name 
-                                    li
-                                    a.dropdown-item.logSystem(href='/logSystem/user') User
-                                    li
-                                    a.dropdown-item.logSystem(href='/logSystem/modify') modify
-                                    li
-                                    a.dropdown-item.logSystem(href='/logout') logout
-                                else 
-                                    li
-                                    a.dropdown-item.logSystem(href='/logSystem/logIn') logIn
-                                    li
-                                    a.dropdown-item.logSystem(href='/logSystem/signUp') signUp
+                    //-         ul.dropdown-menu(aria-labelledby='navbarDropdown')
+                    //-             if name 
+                    //-                 li
+                    //-                 a.dropdown-item.logSystem(href='/logSystem/user') User
+                    //-                 li
+                    //-                 a.dropdown-item.logSystem(href='/logSystem/modify') modify
+                    //-                 li
+                    //-                 a.dropdown-item.logSystem(href='/logout') logout
+                    //-             else 
+                    //-                 li
+                    //-                 a.dropdown-item.logSystem(href='/logSystem/logIn') logIn
+                    //-                 li
+                    //-                 a.dropdown-item.logSystem(href='/logSystem/signUp') signUp
 
         block container
         block javascript

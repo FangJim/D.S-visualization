@@ -6,7 +6,6 @@ require("./config/config");
 const express = require("express");
 const router = require("./routes/router");
 const userRouter = require("./routes/user");
-const sassMiddleware = require("node-sass-middleware");
 const path = require("path");
 const session = require("express-session");
 const flash = require("express-flash");
@@ -20,16 +19,6 @@ app.set("view engine", "pug");
 
 app.use(flash());
 //set app use
-app.use(
-  sassMiddleware({
-    src: path.join(__dirname, "public"),
-    dest: path.join(__dirname, "public"),
-    debug: true,
-    indentedSyntax: false,
-    sourceMap: true,
-    outputStyle: "compressed",
-  })
-);
 
 // Express Session
 app.use(

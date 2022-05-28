@@ -1,7 +1,7 @@
-var svg_width = 1300;
-var svg_height = 400;
-var svgindex_width = 1300;
-var svgindex_height = 20;
+let svg_width = 1300;
+let svg_height = 400;
+let svgindex_width = 1300;
+let svgindex_height = 20;
 let dataset = [];
 let indexArray = [];
 
@@ -15,7 +15,7 @@ for (let i = 0; i < 50; i++) {
   indexArray[i] = i;
 }
 
-var svg = d3
+let svg = d3
   .select(".show")
   .append("svg")
   .attr("width", svg_width)
@@ -48,13 +48,13 @@ svg
   .attr("fill", "#ffff00")
   .attr("font-size", "13px")
   .attr("x", (d, i) => {
-    return i * (svg_width / dataset.length)+3;
+    return i * (svg_width / dataset.length) + 3;
   })
   .attr("y", (d) => {
     return svg_height - d * 4 - 3;
   });
 
-var svgindex = d3
+let svgindex = d3
   .select(".index")
   .append("svg")
   .attr("width", svgindex_width)
