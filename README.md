@@ -2,18 +2,18 @@
 
 ### open project
 ```
-//clone project
+// 1. clone project
 git clone git@github.com:ZJimFang/D.S.V.git
 
-//into folder
+// 2. into folder
 cd D.S.V
 
-//download node modules
+// 3. download node modules
 npm i
 
-//open project
+// 4. open project
 npm start
 
-//open browser and the default port is 3000
+// 5. open browser and the default port is 3000
 //http://localhost:3000/
 ```
